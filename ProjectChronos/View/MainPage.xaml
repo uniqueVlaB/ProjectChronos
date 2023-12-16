@@ -201,7 +201,6 @@
 
                 </CollectionView>
                 <!--#endregion-->
-                <Button Text="Push notification" Clicked="Button_Clicked"/>
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>

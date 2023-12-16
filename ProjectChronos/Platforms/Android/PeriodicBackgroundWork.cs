@@ -41,7 +41,9 @@ namespace ProjectChronos.Droid
 
             foreach (var Event in timetable.Events)
             {
-                if (Event.StartTime >= DateTime.Now && Event.StartTime <= DateTime.Now.AddHours(1) && (Event.StartTime - DateTime.Now).TotalMinutes >= 15)
+                if (Event.StartTime.ToLocalTime() >= DateTime.Now 
+                    && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1) 
+                    && (Event.StartTime.ToLocalTime() - DateTime.Now).TotalMinutes >= 15)
                 {
                     sendNowNotif(6, "15 min entered");
                     if (Preferences.Get("isBeforeNotificationSetted", bool.FalseString) == bool.FalseString)
@@ -67,7 +69,7 @@ namespace ProjectChronos.Droid
                     }
                 }
 
-                if (Event.StartTime >= DateTime.Now && Event.StartTime <= DateTime.Now.AddHours(1))
+                if (Event.StartTime.ToLocalTime() >= DateTime.Now && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1))
                 {
                     sendNowNotif(8, "on start entered");
                     if (Preferences.Get("isNotificationSetted", bool.FalseString) == bool.FalseString)
