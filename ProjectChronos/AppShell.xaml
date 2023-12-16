@@ -1,0 +1,17 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:ProjectChronos"
+       xmlns:fonts="clr-namespace:ProjectChronos.Model.Consts"
+       
+       x:Class="ProjectChronos.AppShell">
+    <TabBar>
+        <Tab Title="Events"
+            Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Timetable}}">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Menu"
+            Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Menu}}">
+            <ShellContent ContentTemplate="{DataTemplate local:MenuPage}" />
+        </Tab>
+    </TabBar>
+</Shell>

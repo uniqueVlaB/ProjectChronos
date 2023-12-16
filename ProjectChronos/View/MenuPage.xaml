@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.MenuPage"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewModel:MenuPageViewModel"
+             Title="Menu">
+    <VerticalStackLayout>
+        <Grid Margin="10" ColumnDefinitions="Auto,*">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding GoToGroupSelectionPopupCommand}">
+
+                </TapGestureRecognizer>
+            </Grid.GestureRecognizers>
+            <Label Grid.Column="0" Text="Group" FontSize="24"/>
+            <Label Grid.Column="1" Text="{Binding SelectedGroup}" FontSize="16" TextColor="Gray" HorizontalOptions="End"/>
+        </Grid>
+        <BoxView HeightRequest="0.1"/>
+        <Grid Margin="10" ColumnDefinitions="Auto,*">
+            <Label Grid.Column="0" Text="Remind about beginning of pairs" FontSize="Subtitle" VerticalOptions="Center"/>
+            <Switch Grid.Column="1" HorizontalOptions="End" IsToggled="{Binding RemindEnabled}"/>
+        </Grid>
+        <BoxView HeightRequest="0.1"/>
+        <Label Margin="0,10,0,0" Text="Test section" HorizontalOptions="Center"/>
+        <Frame Margin="5,5,5,5" CornerRadius="20" BorderColor="Gray" BackgroundColor="Transparent">
+            <VerticalStackLayout>
+                <Label>
+                    <Label.Text>
+                        <MultiBinding StringFormat="{}15 mins:   Pair {0} planned to {1}">
+                            <Binding Path="PairBeforeName" />
+                            <Binding Path="PairBeforeTime" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+                <Label>
+                    <Label.Text>
+                        <MultiBinding StringFormat="{}Now:         Pair {0} planned to {1}">
+                            <Binding Path="PairName" />
+                            <Binding Path="PairTime" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

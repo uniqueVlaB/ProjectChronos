@@ -1,0 +1,53 @@
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="ProjectChronos.View.PopUPs.EventDetailsPopUp"
+               xmlns:obj="clr-namespace:ProjectChronos.View.PopUPs"
+               x:DataType="obj:EventDetailsPopUp"
+               Color="Transparent"
+               
+               >
+
+    <Frame BackgroundColor="{Binding eventInfo.Color}" HeightRequest="300" WidthRequest="350" Padding="10" CornerRadius="20">
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="*,*,*">
+                <Label Grid.Column="2" TextColor="White" Padding="0,0,0,5" HorizontalOptions="End" >
+                    <Label.Text Padding="0,0,0,5">
+                        <MultiBinding StringFormat="{}{0}:{1} - {2}:{3}">
+                            <Binding Path="eventInfo.StartTime.Hour" />
+                            <Binding Path="eventInfo.StartTime.Minute" />
+                            <Binding Path="eventInfo.EndTime.Hour" />
+                            <Binding Path="eventInfo.EndTime.Minute" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+                <Label Grid.Column="1" Text="{Binding eventInfo.StartTime.DayOfWeek}" HorizontalOptions="Center"/>
+                <Label Grid.Column="0" TextColor="White">
+                    <Label.Text Padding="0,0,0,5">
+                        <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                            <Binding Path="eventInfo.StartTime.Day" />
+                            <Binding Path="eventInfo.StartTime.Month" />
+                            <Binding Path="eventInfo.StartTime.Year" />
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+            </Grid>
+            <Label TextColor="White" Text="{Binding eventInfo.Lesson.FullName}" Padding="0,10,0,5" HorizontalOptions="Center"/>
+            <Grid ColumnDefinitions="Auto,*" Padding="0,10,0,0">
+                <Label Grid.Column="0" Text="Type: "/>
+                <Label Grid.Column="1" Text="{Binding eventInfo.FullType}"/>
+            </Grid>
+            <Grid ColumnDefinitions="Auto,*">
+                <Label Grid.Column="0" Text="Groups: "/>
+                <Label Grid.Column="1" Text="{Binding eventInfo.GroupsString}"/>
+            </Grid>
+            <Grid ColumnDefinitions="Auto,*">
+                <Label Grid.Column="0" Text="Teachers: "/>
+                <Label Grid.Column="1" Text="{Binding eventInfo.TeachersString}"/>
+            </Grid>
+        </VerticalStackLayout>
+
+    </Frame>
+
+
+</toolkit:Popup>

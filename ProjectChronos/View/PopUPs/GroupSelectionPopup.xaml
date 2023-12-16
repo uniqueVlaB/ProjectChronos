@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="ProjectChronos.View.PopUPs.GroupSelectionPopup"
+               xmlns:obj="clr-namespace:ProjectChronos.View.PopUPs"
+               xmlns:viewModel="clr-namespace:ProjectChronos.ViewModel.Popups"
+               x:DataType="viewModel:GroupSelectionPopupViewModel"
+               xmlns:model="clr-namespace:ProjectChronos.Model.Cist.Groups"
+               Color="Transparent"
+               >
+
+    <Frame MinimumHeightRequest="400"
+           MinimumWidthRequest="300"
+           MaximumHeightRequest="400"
+           MaximumWidthRequest="300"
+           BackgroundColor="DarkOrange"
+           >
+        <VerticalStackLayout>
+            <SearchBar x:Name="searchBar"  SearchCommand="{Binding SearchCommand}" SearchCommandParameter="{Binding Text,Source={x:Reference searchBar}}"/>
+            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                <CollectionView
+                                ItemsSource="{Binding Result}"
+                                SelectionMode="None"
+                                EmptyView="No results"
+                                MaximumHeightRequest="330">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Group">
+                            <Label Padding="0,10,0,0" Text="{Binding Name}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding .}"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:GroupSelectionPopupViewModel}}, Path=GroupTappedCommand} ">
+                                        
+                                    </TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+            </ScrollView>
+        </VerticalStackLayout>
+        
+    </Frame>
+    
+</toolkit:Popup>

@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.MainPage"
+             xmlns:model="clr-namespace:ProjectChronos.Model.App"
+             xmlns:modelCist="clr-namespace:ProjectChronos.Model.Cist"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModel"
+             x:DataType="viewModel:MainPageViewModel"
+             xmlns:fonts="clr-namespace:ProjectChronos.Model.Consts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="{Binding Title}">
+
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:DataType="viewModel:MainPageViewModel" IconImageSource="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Refresh}}" Command="{Binding GetEventsCommand}"/>
+
+    </ContentPage.ToolbarItems>
+
+    <!--<Grid>-->
+ 
+        <RefreshView
+            Command="{Binding GetEventsCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <VerticalStackLayout>
+                <!--#region AI Joke--><!--
+                <SwipeView>
+                    <SwipeView.LeftItems>
+                        <SwipeItem IconImageSource="dotnet_bot.svg" >
+                            
+                        </SwipeItem>
+                    </SwipeView.LeftItems>
+                    <Frame BorderColor="Red"
+               Padding="10"
+               BackgroundColor="Blue"
+               Margin="5">
+                    <StackLayout>
+                        <Label TextColor="White" Text="Today's AI Joke:" />
+                        <Label TextColor="White" FontAttributes="Bold" Text="Why don't scientists trust atoms? Because they make up everything!" HorizontalOptions="Fill"
+                      />
+                    </StackLayout>
+                </Frame>
+                    
+                </SwipeView>
+                --><!--#endregion-->
+                <!--#region Today events Collection-->
+                <Label Text="Today" Padding="10,0,0,0" FontSize="Large"/>
+                <CollectionView
+                                MinimumHeightRequest="80"
+                                ItemsSource="{Binding TodayEvents}"
+                                SelectionMode="None"
+                                ItemsLayout="HorizontalList"
+                                EmptyView="No Events"
+                                HorizontalScrollBarVisibility="Always">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:EventInfo">
+                            <Frame Margin="3"  BackgroundColor="{Binding Color}" WidthRequest="100" Padding="0,1,0,5">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:MainPageViewModel}}, Path=PopUpDetailsCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Grid>
+                                    <!--<Image Source="{Binding backgroundName}" Aspect="AspectFill" IsOpaque="True"/>-->
+                                    <VerticalStackLayout
+                                                VerticalOptions="Center" Padding="10,0,0,0">
+                                   
+                                    <Label TextColor="White" Text="{Binding Lesson.ShortName}" />
+                                        <Label TextColor="White">
+                                            <Label.Text Padding="0,0,0,5">
+                                                <MultiBinding StringFormat="{}{0}:{1} - {2}:{3}">
+                                                    <Binding Path="StartTime.Hour" />
+                                                    <Binding Path="StartTime.Minute" />
+                                                    <Binding Path="EndTime.Hour" />
+                                                    <Binding Path="EndTime.Minute" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                    <Label TextColor="White">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                <Binding Path="StartTime.Day" />
+                                                <Binding Path="StartTime.Month" />
+                                                <Binding Path="StartTime.Year" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    <Label TextColor="White" Text="{Binding StartTime.DayOfWeek}" />
+
+                                </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+                <!--#endregion-->
+                <!--#region Tomorrow events collection-->
+                <Label Text="Tomorrow" Padding="10,0,0,0" FontSize="Large"/>
+                <CollectionView
+                                MinimumHeightRequest="80"
+                                ItemsSource="{Binding TomorrowEvents}"
+                                SelectionMode="None"
+                                ItemsLayout="HorizontalList"
+                                EmptyView="No Events">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:EventInfo">
+                            <Frame Margin="3"  BackgroundColor="{Binding Color}" WidthRequest="100" Padding="0,1,0,5">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:MainPageViewModel}}, Path=PopUpDetailsCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Grid>
+                                    <!--<Image Source="{Binding backgroundName}" Aspect="AspectFill" IsOpaque="True"/>-->
+                                    <VerticalStackLayout
+                                                VerticalOptions="Center" Padding="10,0,0,0">
+
+                                        <Label TextColor="White" Text="{Binding Lesson.ShortName}" />
+                                        <Label TextColor="White">
+                                            <Label.Text Padding="0,0,0,5">
+                                                <MultiBinding StringFormat="{}{0}:{1} - {2}:{3}">
+                                                    <Binding Path="StartTime.Hour" />
+                                                    <Binding Path="StartTime.Minute" />
+                                                    <Binding Path="EndTime.Hour" />
+                                                    <Binding Path="EndTime.Minute" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label TextColor="White">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                    <Binding Path="StartTime.Day" />
+                                                    <Binding Path="StartTime.Month" />
+                                                    <Binding Path="StartTime.Year" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label TextColor="White" Text="{Binding StartTime.DayOfWeek}" />
+
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+                <!--#endregion-->
+                <!--#region This week events collection-->
+                <Label Text="This week" Padding="10,0,0,0" FontSize="Large"/>
+                <CollectionView
+                                MinimumHeightRequest="80"
+                                ItemsSource="{Binding ThisWeekEvents}"
+                                SelectionMode="None"
+                                ItemsLayout="HorizontalList"
+                                EmptyView="No Events"
+                                HorizontalScrollBarVisibility="Always">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:EventInfo">
+                            <Frame Margin="3"  BackgroundColor="{Binding Color}" WidthRequest="100" Padding="0,1,0,5">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:MainPageViewModel}}, Path=PopUpDetailsCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Grid>
+                                    <!--<Image Source="{Binding backgroundName}" Aspect="AspectFill" IsOpaque="True"/>-->
+                                    <VerticalStackLayout
+                                                VerticalOptions="Center" Padding="10,0,0,0">
+
+                                        <Label TextColor="White" Text="{Binding Lesson.ShortName}" />
+                                        <Label TextColor="White">
+                                            <Label.Text Padding="0,0,0,5">
+                                                <MultiBinding StringFormat="{}{0}:{1} - {2}:{3}">
+                                                    <Binding Path="StartTime.Hour" />
+                                                    <Binding Path="StartTime.Minute" />
+                                                    <Binding Path="EndTime.Hour" />
+                                                    <Binding Path="EndTime.Minute" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label TextColor="White">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                    <Binding Path="StartTime.Day" />
+                                                    <Binding Path="StartTime.Month" />
+                                                    <Binding Path="StartTime.Year" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label TextColor="White" Text="{Binding StartTime.DayOfWeek}" />
+
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+                <!--#endregion-->
+                <Button Text="Push notification" Clicked="Button_Clicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+
+            <!--</Grid>-->
+</ContentPage>
+
