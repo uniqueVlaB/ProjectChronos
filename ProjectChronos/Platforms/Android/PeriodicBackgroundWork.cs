@@ -45,10 +45,8 @@ namespace ProjectChronos.Droid
                     && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1) 
                     && (Event.StartTime.ToLocalTime() - DateTime.Now).TotalMinutes >= 15)
                 {
-                    sendNowNotif(6, "15 min entered");
                     if (Preferences.Get("isBeforeNotificationSetted", bool.FalseString) == bool.FalseString)
                     {
-                        sendNowNotif(7, "isBeforeNotificationSetted condition entered");
                         var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedBeforeNotifName", lesson.ShortName);
                         Preferences.Set("PlannedBeforeNotifTime", Event.StartTime.AddMinutes(-15).ToLocalTime().ToString("dd.MM.yyyy HH:mm"));
@@ -57,24 +55,27 @@ namespace ProjectChronos.Droid
                         {
                             NotificationId = (int)(Event.LessonId/2 + 15),
                             Title = "Pair is in 15 minutes",
-                            Description =  $"Pair {lesson.FullName} will start in 15 minutes",
+                            Description =  $"{lesson.FullName} will start in 15 minutes",
+                            Subtitle = lesson.ShortName,
                             BadgeNumber = 42,
                             Schedule = new NotificationRequestSchedule
                             {
                                 NotifyTime = Event.StartTime.AddMinutes(-15).ToLocalTime(),
                             },
                         };
-                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => {Preferences.Set("isBeforeNotificationSetted", bool.FalseString);});
+                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => {
+                            Preferences.Set("isBeforeNotificationSetted", bool.FalseString);
+                            Preferences.Set("PlannedBeforeNotifName", bool.FalseString);
+                            Preferences.Set("PlannedBeforeNotifTime", bool.FalseString);
+                        });
                         Preferences.Set("isBeforeNotificationSetted", bool.TrueString);
                     }
                 }
 
                 if (Event.StartTime.ToLocalTime() >= DateTime.Now && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1))
                 {
-                    sendNowNotif(8, "on start entered");
                     if (Preferences.Get("isNotificationSetted", bool.FalseString) == bool.FalseString)
                     {
-                        sendNowNotif(9, "isNotificationSetted entered");
                         var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedNotifName", lesson.ShortName);
                         Preferences.Set("PlannedNotifTime", Event.StartTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm"));
@@ -83,20 +84,24 @@ namespace ProjectChronos.Droid
                         {
                             NotificationId = (int)(Event.LessonId/2),
                             Title = "Pair has been started",
-                            Description = $"Pair {timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId)).FullName} has been started",
+                            Description = $"{lesson.FullName} has been started",
+                            Subtitle = lesson.ShortName,
                             BadgeNumber = 42,
                             Schedule = new NotificationRequestSchedule
                             {
                                 NotifyTime = Event.StartTime.ToLocalTime(),
                             },
                         };
-                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => { Preferences.Set("isNotificationSetted", bool.FalseString); });
+                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => {
+                            Preferences.Set("isNotificationSetted", bool.FalseString);
+                            Preferences.Set("PlannedNotifName", bool.FalseString);
+                            Preferences.Set("PlannedNotifTime", bool.FalseString);
+                        });
                         Preferences.Set("isNotificationSetted", bool.TrueString);
                     }
                     
                 }
             }
-            sendNowNotif(10, timetable.Events[1].StartTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm"));
             return Result.InvokeSuccess();
         }
 

@@ -8,10 +8,10 @@
                
                >
 
-    <Frame BackgroundColor="{Binding eventInfo.Color}" HeightRequest="300" WidthRequest="350" Padding="10" CornerRadius="20">
+    <Frame BackgroundColor="{Binding eventInfo.Color}" HeightRequest="300"  WidthRequest="350" Padding="10" CornerRadius="10">
         <VerticalStackLayout>
             <Grid ColumnDefinitions="*,*,*">
-                <Label Grid.Column="2" TextColor="White" Padding="0,0,0,5" HorizontalOptions="End" >
+                <Label Grid.Column="2" TextColor="White" Margin="0,0,0,0" HorizontalOptions="End" >
                     <Label.Text Padding="0,0,0,5">
                         <MultiBinding StringFormat="{}{0}:{1} - {2}:{3}">
                             <Binding Path="eventInfo.StartTime.Hour" />

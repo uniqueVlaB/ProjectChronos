@@ -18,13 +18,9 @@ namespace ProjectChronos.ViewModel
         public string selectedGroup = Preferences.Get("GroupName","");
         private bool _remindEnabled;
         [ObservableProperty]
-        public string pairBeforeName;
+        public string pairBeforeString;
         [ObservableProperty]
-        public string pairBeforeTime;
-        [ObservableProperty]
-        public string pairName;
-        [ObservableProperty]
-        public string pairTime;
+        public string pairNowString;
         public bool RemindEnabled
         {
             get { return _remindEnabled; }
@@ -44,10 +40,28 @@ namespace ProjectChronos.ViewModel
         public MenuPageViewModel()
         {
             _remindEnabled = bool.Parse(Preferences.Get("NotificationsWorkEnabled", bool.FalseString));
-            PairBeforeName = Preferences.Get("PlannedBeforeNotifName","Not Found");
-            PairBeforeTime = Preferences.Get("PlannedBeforeNotifTime", "Not Found");
-            PairName = Preferences.Get("PlannedNotifName", "Not Found");
-            PairTime = Preferences.Get("PlannedNotifTime", "Not Found");
+           var PairBeforeName = Preferences.Get("PlannedBeforeNotifName",bool.FalseString);
+           var PairBeforeTime = Preferences.Get("PlannedBeforeNotifTime", bool.FalseString);
+           var PairName = Preferences.Get("PlannedNotifName", bool.FalseString);
+           var PairTime = Preferences.Get("PlannedNotifTime", bool.FalseString);
+            if (PairBeforeName == bool.FalseString || PairBeforeTime == bool.FalseString)
+            {
+                PairBeforeString = "Unknown";
+            }
+            else 
+            {
+                PairBeforeString = $"Pair {PairBeforeName} planned to {PairBeforeTime}";
+            }
+
+            if (PairName == bool.FalseString || PairTime == bool.FalseString)
+            {
+                PairNowString = "Unknown";
+            }
+            else
+            {
+                PairNowString = $"Pair {PairName} planned to {PairTime}";
+            }
+
         }
 
         [RelayCommand]
