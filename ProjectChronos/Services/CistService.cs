@@ -47,7 +47,11 @@ namespace ProjectChronos.Services
                 var jsonStr = Encoding.Unicode.GetString(bytesUtf16);
                 if (!jsonStr.Contains("\"events\":[\n]}]")) timetable = JsonConvert.DeserializeObject<Timetable>(jsonStr); 
             }
-            
+            for (int i = 0; i < timetable.Events.Count; i++) 
+            {
+                timetable.Events[i].StartTime = timetable.Events[i].StartTime.ToLocalTime();
+                timetable.Events[i].EndTime = timetable.Events[i].EndTime.ToLocalTime();
+            }
             return timetable;
         }
         public async Task<List<Model.Cist.Groups.Group>> GetAllGroupsAsync()

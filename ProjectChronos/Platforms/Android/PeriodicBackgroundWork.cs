@@ -18,6 +18,14 @@ namespace ProjectChronos.Droid
         public override Result DoWork()
         {
             sendNowNotif(5, "DoWork entered");
+            if (LocalNotificationCenter.Current.GetPendingNotificationList().Result.Count is 0) {
+                Preferences.Set("isBeforeNotificationSetted", bool.FalseString);
+                Preferences.Set("PlannedBeforeNotifName", bool.FalseString);
+                Preferences.Set("PlannedBeforeNotifTime", bool.FalseString);
+                Preferences.Set("isNotificationSetted", bool.FalseString);
+                Preferences.Set("PlannedNotifName", bool.FalseString);
+                Preferences.Set("PlannedNotifTime", bool.FalseString);
+            }
             Timetable timetable = new();
 
             var serializer = new XmlSerializer(typeof(Timetable));
@@ -41,15 +49,15 @@ namespace ProjectChronos.Droid
 
             foreach (var Event in timetable.Events)
             {
-                if (Event.StartTime.ToLocalTime() >= DateTime.Now 
-                    && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1) 
-                    && (Event.StartTime.ToLocalTime() - DateTime.Now).TotalMinutes >= 15)
+                if (Event.StartTime >= DateTime.Now 
+                    && Event.StartTime <= DateTime.Now.AddHours(1) 
+                    && (Event.StartTime - DateTime.Now).TotalMinutes >= 15)
                 {
                     if (Preferences.Get("isBeforeNotificationSetted", bool.FalseString) == bool.FalseString)
                     {
                         var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedBeforeNotifName", lesson.ShortName);
-                        Preferences.Set("PlannedBeforeNotifTime", Event.StartTime.AddMinutes(-15).ToLocalTime().ToString("dd.MM.yyyy HH:mm"));
+                        Preferences.Set("PlannedBeforeNotifTime", Event.StartTime.AddMinutes(-15).ToString("dd.MM.yyyy HH:mm"));
 
                         NotificationRequest miRequest = new NotificationRequest
                         {
@@ -60,25 +68,21 @@ namespace ProjectChronos.Droid
                             BadgeNumber = 42,
                             Schedule = new NotificationRequestSchedule
                             {
-                                NotifyTime = Event.StartTime.AddMinutes(-15).ToLocalTime(),
+                                NotifyTime = Event.StartTime.AddMinutes(-15),
                             },
                         };
-                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => {
-                            Preferences.Set("isBeforeNotificationSetted", bool.FalseString);
-                            Preferences.Set("PlannedBeforeNotifName", bool.FalseString);
-                            Preferences.Set("PlannedBeforeNotifTime", bool.FalseString);
-                        });
+                        LocalNotificationCenter.Current.Show(miRequest);
                         Preferences.Set("isBeforeNotificationSetted", bool.TrueString);
                     }
                 }
 
-                if (Event.StartTime.ToLocalTime() >= DateTime.Now && Event.StartTime.ToLocalTime() <= DateTime.Now.AddHours(1))
+                if (Event.StartTime >= DateTime.Now && Event.StartTime <= DateTime.Now.AddHours(1))
                 {
                     if (Preferences.Get("isNotificationSetted", bool.FalseString) == bool.FalseString)
                     {
                         var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedNotifName", lesson.ShortName);
-                        Preferences.Set("PlannedNotifTime", Event.StartTime.ToLocalTime().ToString("dd.MM.yyyy HH:mm"));
+                        Preferences.Set("PlannedNotifTime", Event.StartTime.ToString("dd.MM.yyyy HH:mm"));
 
                         NotificationRequest miRequest = new NotificationRequest
                         {
@@ -89,15 +93,12 @@ namespace ProjectChronos.Droid
                             BadgeNumber = 42,
                             Schedule = new NotificationRequestSchedule
                             {
-                                NotifyTime = Event.StartTime.ToLocalTime(),
+                                NotifyTime = Event.StartTime,
                             },
                         };
-                        LocalNotificationCenter.Current.Show(miRequest).ContinueWith(t => {
-                            Preferences.Set("isNotificationSetted", bool.FalseString);
-                            Preferences.Set("PlannedNotifName", bool.FalseString);
-                            Preferences.Set("PlannedNotifTime", bool.FalseString);
-                        });
+                        LocalNotificationCenter.Current.Show(miRequest);
                         Preferences.Set("isNotificationSetted", bool.TrueString);
+
                     }
                     
                 }

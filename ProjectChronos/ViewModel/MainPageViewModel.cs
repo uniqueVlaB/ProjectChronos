@@ -160,8 +160,8 @@ namespace ProjectChronos.ViewModel
                    
                     events.Add(new EventInfo
                     {
-                        StartTime = Event.StartTime.ToLocalTime(),
-                        EndTime = Event.EndTime.ToLocalTime(),
+                        StartTime = Event.StartTime,
+                        EndTime = Event.EndTime,
                         FullType = eventType.FullName,
                         ShortType = eventType.ShortName,
                         BaseTypeName = eventType.EnglishBaseName,
@@ -212,8 +212,8 @@ namespace ProjectChronos.ViewModel
                         var eventType = timetable.EventTypes.FirstOrDefault(et => et.Id.Equals(Event.TypeId));
                         events.Add(new EventInfo
                         {
-                            StartTime = Event.StartTime.ToLocalTime(),
-                            EndTime = Event.EndTime.ToLocalTime(),
+                            StartTime = Event.StartTime,
+                            EndTime = Event.EndTime,
                             FullType = eventType.FullName,
                             ShortType = eventType.ShortName,
                             BaseTypeName = eventType.EnglishBaseName,
