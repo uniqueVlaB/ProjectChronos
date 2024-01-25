@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.View.DeadlinesPage"
+             xmlns:model="clr-namespace:ProjectChronos.Model.App"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModel"
+             x:DataType="viewModel:DeadlinesPageViewModel"
+             xmlns:fonts="clr-namespace:ProjectChronos.Model.Consts"
+             Title="{Binding Title}">
+    
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding Deadlines}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:DeadlineInfo">
+                            <Frame BorderColor="White" BackgroundColor="Black"
+                                   Padding="10,10,10,10"
+                                   Margin="10,10,10,10"
+                                   VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand">
+                                <VerticalStackLayout>
+                                    <Grid ColumnDefinitions="*,auto"
+                                      RowDefinitions="auto,*">
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Title}" FontSize="Title"/>
+                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding DeadlineTimeString}"/>
+                                </Grid>
+                                <Label Text="{Binding Description}" FontSize="Default"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </VerticalStackLayout>
+        </ScrollView>
+        <ImageButton 
+            BackgroundColor="Green"
+            CornerRadius="100"
+            HeightRequest="50"
+            WidthRequest="50"
+            Padding="0,1,6,0"
+            Margin="0,0,10,10"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+    Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Plus}}"/>
+    </Grid>
+</ContentPage>

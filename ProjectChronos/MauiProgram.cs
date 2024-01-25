@@ -33,6 +33,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<GroupSelectionPopup>();
 		builder.Services.AddTransient<GroupSelectionPopupViewModel>();
         builder.Services.AddSingleton<IMessenger, WeakReferenceMessenger>();
+		builder.Services.AddSingleton<DeadlinesPageViewModel>();
+        builder.Services.AddSingleton<View.DeadlinesPage>();
 
         return builder.Build();
 	}

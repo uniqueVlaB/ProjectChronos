@@ -9,9 +9,14 @@
             Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Timetable}}">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
+        <Tab Title="Deadlines"
+     Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.ClockAlert}}">
+            <ShellContent ContentTemplate="{DataTemplate local:View.DeadlinesPage}" />
+        </Tab>
         <Tab Title="Menu"
             Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Menu}}">
             <ShellContent ContentTemplate="{DataTemplate local:MenuPage}" />
         </Tab>
+        
     </TabBar>
 </Shell>
