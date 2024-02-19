@@ -10,6 +10,7 @@ using CommunityToolkit.Maui.Views;
 using ProjectChronos.Model.Cist.Events;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using Mopups.Services;
 
 namespace ProjectChronos.ViewModel
 {
@@ -24,33 +25,16 @@ namespace ProjectChronos.ViewModel
         public ObservableCollection<EventInfo> ThisWeekEvents { get; } = new();
 
         CistService cistService;
-        public MainPageViewModel(CistService cistService) {
+        StorageService storageService;
+        public MainPageViewModel(CistService cistService, StorageService storageService) {
             this.cistService = cistService;
+            this.storageService = storageService;
                 Title = Preferences.Get("GroupName", "");
                 SetEventsWithStoredTimetable();
         }
 
         void SetEventsWithStoredTimetable() {
-            Timetable timetable = new();
-
-            var serializer = new XmlSerializer(typeof(Timetable));
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "events.xml");
-
-            try
-            {
-                using (var reader = new StreamReader(path))
-                {
-                    timetable = (Timetable)serializer.Deserialize(reader);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return;
-            }
+            var timetable = storageService.GetTimetable();
 
             if (timetable is null) return;
             // var timetableStr = await SecureStorage.GetAsync("timetable");
@@ -87,8 +71,7 @@ namespace ProjectChronos.ViewModel
                 return;
 
             var popup = new EventDetailsPopUp(eventInfo);
-
-           await Shell.Current.ShowPopupAsync(popup);
+            await MopupService.Instance.PushAsync(popup);
            
         }
         [RelayCommand]
@@ -103,13 +86,7 @@ namespace ProjectChronos.ViewModel
                 var timetable = await cistService.GetTimetableWithOffsetAsync(30);
                 // TODO: find something better
                 //   await SecureStorage.SetAsync("timetable", JsonConvert.SerializeObject(timetable));
-                var serializer = new XmlSerializer(typeof(Timetable));
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
-                Directory.CreateDirectory(path);
-                using (var writer = new StreamWriter(Path.Combine(path, "events.xml")))
-                {
-                    serializer.Serialize(writer, timetable);
-                }
+                storageService.SaveTimetable(timetable);
 
                 var todayEvents = GetEventsInfosByDateWithOffset(timetable, DateTime.Now, 0);
 
@@ -228,11 +205,11 @@ namespace ProjectChronos.ViewModel
             }
             return events;
         }
-        [RelayCommand]
-        public void ShowPopup() {
-            var popup = new EventDetailsPopUp();
-            Shell.Current.ShowPopupAsync(popup);
+        //[RelayCommand]
+        //public async Task ShowPopup() {
+        //    var popup = new EventDetailsPopUp();
+        //    await MopupService.Instance.PushAsync(popup);
 
-        }
+        //}
     }
 }

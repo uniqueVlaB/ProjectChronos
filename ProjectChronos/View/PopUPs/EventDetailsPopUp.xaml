@@ -1,10 +1,10 @@
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
                x:Class="ProjectChronos.View.PopUPs.EventDetailsPopUp"
                xmlns:obj="clr-namespace:ProjectChronos.View.PopUPs"
                x:DataType="obj:EventDetailsPopUp"
-               Color="Transparent"
+               BackgroundColor="Transparent"
                
                >
 
@@ -50,4 +50,4 @@
     </Frame>
 
 
-</toolkit:Popup>
+</mopups:PopupPage>

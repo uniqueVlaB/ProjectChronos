@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Maui.Core.Views;
 using ProjectChronos.ViewModel.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Mopups.Services;
 
 namespace ProjectChronos.ViewModel
 {
@@ -68,7 +69,7 @@ namespace ProjectChronos.ViewModel
         async Task GoToGroupSelectionPopupAsync() {
             var popup = new GroupSelectionPopup(new GroupSelectionPopupViewModel(new Services.CistService()));
 
-            await Shell.Current.ShowPopupAsync(popup);
+            await MopupService.Instance.PushAsync(popup);
             SelectedGroup = Preferences.Default.Get("GroupName", "");
             
         }

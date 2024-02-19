@@ -77,22 +77,30 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Mopups" Version="1.3.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Plugin.LocalNotification" Version="10.1.8" />
+		<PackageReference Include="Plugin.LocalNotification" Version="11.0.1-preview01" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.2" />
+		<PackageReference Include="UraniumUI.Blurs" Version="2.7.4" />
+		<PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.7.4" />
+		<PackageReference Include="UraniumUI.Material" Version="2.7.4" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\AddDeadlinePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\DeadlinesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\PopUPs\GroupSelectionPopup.xaml">
+	  <MauiXaml Update="View\Popups\GroupSelectionPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <PackageReference Include="Xamarin.AndroidX.Collection.Ktx">
-	    <Version>1.3.0.2</Version>
+	    <Version>1.4.0</Version>
 	  </PackageReference>
 	  <PackageReference Include="Xamarin.AndroidX.Work.Runtime">
 	    <Version>2.9.0</Version>
@@ -107,11 +115,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.6" />
+	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="BlurBehavior\" />
 	</ItemGroup>
 
 </Project>

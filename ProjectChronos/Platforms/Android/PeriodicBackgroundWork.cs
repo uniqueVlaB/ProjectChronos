@@ -17,12 +17,10 @@ namespace ProjectChronos.Droid
 
         public override Result DoWork()
         {
-            sendNowNotif(5, "DoWork entered");
+
             if (LocalNotificationCenter.Current.GetPendingNotificationList().Result.Count is 0) {
-                Preferences.Set("isBeforeNotificationSetted", bool.FalseString);
                 Preferences.Set("PlannedBeforeNotifName", bool.FalseString);
                 Preferences.Set("PlannedBeforeNotifTime", bool.FalseString);
-                Preferences.Set("isNotificationSetted", bool.FalseString);
                 Preferences.Set("PlannedNotifName", bool.FalseString);
                 Preferences.Set("PlannedNotifTime", bool.FalseString);
             }
@@ -46,16 +44,13 @@ namespace ProjectChronos.Droid
             {
                 return Result.InvokeSuccess();
             }
-
             foreach (var Event in timetable.Events)
             {
                 if (Event.StartTime >= DateTime.Now 
                     && Event.StartTime <= DateTime.Now.AddHours(1) 
                     && (Event.StartTime - DateTime.Now).TotalMinutes >= 15)
                 {
-                    if (Preferences.Get("isBeforeNotificationSetted", bool.FalseString) == bool.FalseString)
-                    {
-                        var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
+                    var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedBeforeNotifName", lesson.ShortName);
                         Preferences.Set("PlannedBeforeNotifTime", Event.StartTime.AddMinutes(-15).ToString("dd.MM.yyyy HH:mm"));
 
@@ -72,14 +67,12 @@ namespace ProjectChronos.Droid
                             },
                         };
                         LocalNotificationCenter.Current.Show(miRequest);
-                        Preferences.Set("isBeforeNotificationSetted", bool.TrueString);
                     }
-                }
+                
 
                 if (Event.StartTime >= DateTime.Now && Event.StartTime <= DateTime.Now.AddHours(1))
                 {
-                    if (Preferences.Get("isNotificationSetted", bool.FalseString) == bool.FalseString)
-                    {
+                    
                         var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
                         Preferences.Set("PlannedNotifName", lesson.ShortName);
                         Preferences.Set("PlannedNotifTime", Event.StartTime.ToString("dd.MM.yyyy HH:mm"));
@@ -97,11 +90,10 @@ namespace ProjectChronos.Droid
                             },
                         };
                         LocalNotificationCenter.Current.Show(miRequest);
-                        Preferences.Set("isNotificationSetted", bool.TrueString);
 
                     }
                     
-                }
+                
             }
             return Result.InvokeSuccess();
         }
@@ -116,7 +108,7 @@ namespace ProjectChronos.Droid
                 BadgeNumber = 42,
                 Schedule = new NotificationRequestSchedule
                 {
-                    NotifyTime = DateTime.Now.AddSeconds(offset),
+                    NotifyTime = DateTime.Now.AddSeconds(offset), 
                 },
             };
             LocalNotificationCenter.Current.Show(miRequest);

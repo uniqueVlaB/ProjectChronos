@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
+using Mopups.Services;
 using ProjectChronos.Model.Cist.Groups;
 using ProjectChronos.Services;
 using ProjectChronos.View.PopUPs;
@@ -60,7 +61,7 @@ namespace ProjectChronos.ViewModel.Popups
             Preferences.Default.Set("GroupName", group.Name);
             
             await Shell.Current.DisplayAlert("Group Selected!", $"Selected group: {group.Name}", "OK");
-           
+            await MopupService.Instance.PopAsync();
         }
     }
 

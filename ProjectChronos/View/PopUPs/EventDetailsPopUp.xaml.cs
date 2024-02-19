@@ -4,7 +4,7 @@ using ProjectChronos.Model.App;
 
 namespace ProjectChronos.View.PopUPs;
 
-public partial class EventDetailsPopUp : Popup
+public partial class EventDetailsPopUp
 {
 
      public EventInfo eventInfo { get; set; }

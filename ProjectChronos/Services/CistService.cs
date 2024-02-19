@@ -35,7 +35,7 @@ namespace ProjectChronos.Services
                 $"&timetable_id={Preferences.Default.Get("GroupId", "")}" +
                 $"&time_from={new DateTimeOffset(DateTime.Now.AddDays(-1)).ToUnixTimeSeconds()}" +
                 $"&time_to={new DateTimeOffset(DateTime.Now).AddDays(days-1).ToUnixTimeSeconds()}" +
-                $"&idClient=Timetablekoshovyi");
+                $"&idClient={Secrets.IdClient}");
 
             var timetable = new Timetable();
             var response = await httpClient.GetAsync(u);

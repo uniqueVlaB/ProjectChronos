@@ -22,7 +22,7 @@ namespace ProjectChronos;
 
         if (bool.FalseString == Preferences.Get("NotificationsWorkEnabled", bool.FalseString))
         {
-            //LocalNotificationCenter.Current.CancelAll();
+            LocalNotificationCenter.Current.CancelAll();
             workManager.CancelAllWork();
             Preferences.Remove("NotificationWorkId");
             Preferences.Set("NotificationsWorkInProcess", bool.FalseString);
