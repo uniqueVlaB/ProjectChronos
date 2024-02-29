@@ -32,5 +32,7 @@ namespace ProjectChronos.Model.App.Deadlines
         public Priority Priority { get; set; }
 
         public bool IsInProcess { get;  set; }
+
+        //public int NumOfCompletedTasks { get { return _tasks.Where(t => t.IsCompleted).Count();} set { NumOfCompletedTasks = value; } }
     }
 }

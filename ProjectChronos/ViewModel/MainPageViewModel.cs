@@ -69,7 +69,7 @@ namespace ProjectChronos.ViewModel
         {
             if (eventInfo == null)
                 return;
-
+            HapticFeedback.Perform(HapticFeedbackType.Click);
             var popup = new EventDetailsPopUp(eventInfo);
             await MopupService.Instance.PushAsync(popup);
            

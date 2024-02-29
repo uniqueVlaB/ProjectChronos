@@ -20,6 +20,7 @@ public static class MauiProgram
 		builder
 			
 			.UseMauiApp<App>()
+			.UseLocalNotification()
 			.UseMauiCommunityToolkit()
             .UseUraniumUI()
             .UseUraniumUIMaterial()
@@ -46,6 +47,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<DeadlinesPageViewModel>();
         builder.Services.AddSingleton<DeadlinesPage>();
 		builder.Services.AddTransient<AddDeadlinePage>();
+        builder.Services.AddSingleton<WorkService>();
 
         return builder.Build();
 	}

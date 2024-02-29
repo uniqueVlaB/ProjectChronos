@@ -10,6 +10,10 @@ using CommunityToolkit.Maui.Core.Views;
 using ProjectChronos.ViewModel.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mopups.Services;
+using Plugin.LocalNotification;
+using ProjectChronos.Services;
+
+
 
 namespace ProjectChronos.ViewModel
 {
@@ -17,30 +21,32 @@ namespace ProjectChronos.ViewModel
     {
         [ObservableProperty]
         public string selectedGroup = Preferences.Get("GroupName","");
-        private bool _remindEnabled;
         [ObservableProperty]
         public string pairBeforeString;
         [ObservableProperty]
         public string pairNowString;
-        public bool RemindEnabled
+        [ObservableProperty]
+        bool remindEnabled;
+        WorkService workService;
+        //public bool RemindEnabled
+        //{
+        //    get { return _remindEnabled; }
+        //    set
+        //    {
+        //        if (_remindEnabled != value)
+        //        {
+        //            _remindEnabled = value;
+        //            OnPropertyChanged();
+        //            Preferences.Set("NotificationsWorkEnabled", _remindEnabled.ToString());
+
+        //        }
+        //    }
+        //}
+
+        public MenuPageViewModel(WorkService workService)
         {
-            get { return _remindEnabled; }
-            set
-            {
-                if (_remindEnabled != value)
-                {
-                    _remindEnabled = value;
-                    OnPropertyChanged();
-                    Preferences.Set("NotificationsWorkEnabled", _remindEnabled.ToString());
-                }
-            }
-        }
-
-
-
-        public MenuPageViewModel()
-        {
-            _remindEnabled = bool.Parse(Preferences.Get("NotificationsWorkEnabled", bool.FalseString));
+            this.workService = workService;
+            RemindEnabled = bool.Parse(Preferences.Get("DailyWorkEnabled", bool.FalseString));
            var PairBeforeName = Preferences.Get("PlannedBeforeNotifName",bool.FalseString);
            var PairBeforeTime = Preferences.Get("PlannedBeforeNotifTime", bool.FalseString);
            var PairName = Preferences.Get("PlannedNotifName", bool.FalseString);
@@ -63,6 +69,22 @@ namespace ProjectChronos.ViewModel
                 PairNowString = $"Pair {PairName} planned to {PairTime}";
             }
 
+        }
+
+        [RelayCommand]
+        Task ToggleRemindPairs()
+        {
+            if(RemindEnabled)
+                workService.StartDailyWork();
+            else 
+                workService.StopDailyWork();
+
+            //if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+            //{
+            //    await LocalNotificationCenter.Current.RequestNotificationPermission();
+            //}
+            Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
+            return Task.CompletedTask;
         }
 
         [RelayCommand]

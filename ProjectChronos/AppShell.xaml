@@ -5,7 +5,8 @@
        xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
        
        x:Class="ProjectChronos.AppShell">
-    <TabBar>
+    <TabBar >
+
         <Tab Title="Events"
             Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Timetable}}">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />

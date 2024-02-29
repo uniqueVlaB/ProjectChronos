@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.LocalNotification;
+using ProjectChronos.Graphics;
 using ProjectChronos.Model.App.Deadlines;
 using ProjectChronos.Services;
 using ProjectChronos.View;
@@ -25,12 +26,16 @@ namespace ProjectChronos.ViewModel
         TimeSpan timeObj = new();
         [ObservableProperty]
         string addEditPageTitle;
+
+        [ObservableProperty]
+        CompleteCircleDrawing progress = new() { NumOfCompletedTasks = 1, TotalTasks = 10 };
         public ObservableCollection<Model.App.Deadlines.Task> Tasks { get; } = new();
         #endregion
         public DeadlinesPageViewModel(StorageService storageService) {
             Title = "Deadlines";
             StorageService = storageService;
             var deadlines = StorageService.GetDeadlines();
+           
             if (deadlines is null || deadlines.Count < 1) return;
             foreach(var deadline in deadlines) {
                 Deadlines.Add(deadline);
@@ -45,27 +50,44 @@ namespace ProjectChronos.ViewModel
             //};
             //for(int i = 0; i < 15;i++) Deadlines.Add(d);
         }
+        [RelayCommand]
+         void SetProgressCircle(DeadlineInfo info)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (info is null)
+                {
+                    Shell.Current.DisplayAlert("Error!", "info is null", "OK");
+                    return;
+                }
+                Progress.TotalTasks = info.Tasks.Count;
+                Progress.NumOfCompletedTasks = info.Tasks.Select(t => t.IsCompleted).Count();
+            });
+            
+        }
 
         [RelayCommand]
         async Task LeftSwipeAsync(DeadlineInfo info) {
-            Vibration.Vibrate(TimeSpan.FromMilliseconds(30));
-            await Task.Delay(100);
-            Vibration.Vibrate(TimeSpan.FromMilliseconds(30));
-            Vibration.Default.Vibrate(20);
+            if (info is null) {
+                await Shell.Current.DisplayAlert("Error!", "info is null", "OK");
+                return;
+            }
+            HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
             var result = await Shell.Current.DisplayAlert("Delete deadline?",$"Are you sure you want to delete deadline with id {info.Id}?","Yes","No");
             if (result) Deadlines.Remove(info);      
         }
 
         [RelayCommand]
         async Task AddCustomDeadlineAsync() {
+            HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             AddEditPageTitle = "Add deadline";
             DeadlineObj = new();
             TimeObj = new();
             DeadlineObj.DeadlineTime = DateTime.Now;
             TimeObj = DeadlineObj.DeadlineTime.TimeOfDay;
             Tasks.Clear();
-            Tasks.Add(new Model.App.Deadlines.Task { Text = "Fat Fuck"});
-            await Shell.Current.Navigation.PushAsync(new AddDeadlinePage(this));  
+            Tasks.Add(new Model.App.Deadlines.Task { Text = "Fat Fuck" });
+            await Shell.Current.Navigation.PushAsync(new AddDeadlinePage(this));
         }
         [RelayCommand]
         [Obsolete]
@@ -106,10 +128,13 @@ namespace ProjectChronos.ViewModel
         [RelayCommand]
         async Task SubmitDeadline()
         {
+            
             if (DeadlineObj != null) 
             {
                 DeadlineObj.DeadlineTime += TimeObj;
                 DeadlineObj.Id = Guid.NewGuid();
+                DeadlineObj.SetTime = DateTime.Now;
+                DeadlineObj.Tasks = Tasks.Where(t => t.Text != string.Empty).ToList();
                 Deadlines.Add(DeadlineObj); 
             }
             StorageService.SaveDeadlines(Deadlines.ToList());

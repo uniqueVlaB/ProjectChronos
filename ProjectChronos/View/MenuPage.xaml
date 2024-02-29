@@ -6,8 +6,10 @@
              xmlns:fonts="clr-namespace:ProjectChronos.Model.Consts"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewModel:MenuPageViewModel"
+             x:Name="this"
              Title="Menu">
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout>
         <Grid Margin="10" ColumnDefinitions="Auto,*,auto">
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding GoToGroupSelectionPopupCommand}">
@@ -16,14 +18,20 @@
             </Grid.GestureRecognizers>
             <Label Grid.Column="0" Text="Group" FontSize="24"/>
             <Label Grid.Column="1" VerticalOptions="Center" Text="{Binding SelectedGroup}" FontSize="18" TextColor="Gray" HorizontalOptions="End"/>
-            <Image Grid.Column="2" VerticalOptions="Center"  Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.ChevronRight}, Color=Gray}"/>
+            <Image Grid.Column="2" VerticalOptions="Center" Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.ChevronRight}, Color=Gray}"/>
         </Grid>
         <BoxView HeightRequest="0.1"/>
         <Grid Margin="10" ColumnDefinitions="Auto,*">
             <Label Grid.Column="0" Text="Remind about beginning of pairs" FontSize="Subtitle" VerticalOptions="Center"/>
-            <Switch Grid.Column="1" HorizontalOptions="EndAndExpand" IsToggled="{Binding RemindEnabled}"/>
+                <Switch Grid.Column="1" HorizontalOptions="EndAndExpand" IsToggled="{Binding RemindEnabled}">
+                    <Switch.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="Toggled" 
+                            Command="{Binding Source={x:Reference this}, Path=BindingContext.ToggleRemindPairsCommand}"
+                            />
+                    </Switch.Behaviors>
+                </Switch>
         </Grid>
-        <BoxView HeightRequest="0.1"/>
+        <!--<BoxView HeightRequest="0.1"/>
         <Label Margin="0,10,0,0" Text="Test section" HorizontalOptions="Center"/>
         <Frame Margin="5,5,5,5" CornerRadius="20" BorderColor="Gray" BackgroundColor="Transparent">
             <VerticalStackLayout>
@@ -37,7 +45,8 @@
                     <Label Text="{Binding PairNowString}" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-        </Frame>
+        </Frame>-->
         <Button Text="Push test notification" Margin="20,10,20,10" BackgroundColor="Gray" TextColor="White" Clicked="Button_Clicked"/>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
