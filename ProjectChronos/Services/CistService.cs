@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using ProjectChronos.Model.App;
+using ProjectChronos.Models.App;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
-using ProjectChronos.Model.Cist.Events;
-using ProjectChronos.Model.Cist.Groups;
+using ProjectChronos.Models.Cist.Events;
+using ProjectChronos.Models.Cist.Groups;
 
 namespace ProjectChronos.Services
 {
@@ -54,7 +54,7 @@ namespace ProjectChronos.Services
             }
             return timetable;
         }
-        public async Task<List<Model.Cist.Groups.Group>> GetAllGroupsAsync()
+        public async Task<List<Models.Cist.Groups.Group>> GetAllGroupsAsync()
         {
             Uri u = new($"https://cist.nure.ua/ias/app/tt/P_API_GROUP_JSON");
             var university = new University();
@@ -68,7 +68,7 @@ namespace ProjectChronos.Services
               
                 university = JsonConvert.DeserializeObject<UniversityRootObject>(jsonStr).University;
             }
-            var groups = new List<Model.Cist.Groups.Group>();
+            var groups = new List<Models.Cist.Groups.Group>();
             for (int a = 0; a < university.Faculties.Count; a++) {
                 for (int b = 0; b < university.Faculties[a].Directions.Count; b++) {
                     groups.AddRange(university.Faculties[a].Directions[b].Groups);

@@ -14,7 +14,7 @@ namespace ProjectChronos.Services
         public Task<bool> StartDailyWork()
         {
 #if ANDROID
-                if(Preferences.Get("DailyWorkInProcess", false))return Task.FromResult(true);
+                if(Preferences.Get("DailyWorkInProcess", bool.FalseString) == bool.TrueString)return Task.FromResult(true);
                     var workManager = AndroidX.Work.WorkManager.GetInstance(Android.App.Application.Context);
                     AndroidX.Work.PeriodicWorkRequest workRequest = AndroidX.Work.PeriodicWorkRequest.Builder.From<ProjectChronos.Droid.DailyBackgroundWork>(TimeSpan.FromDays(1)).Build();
                     workManager.Enqueue(workRequest);

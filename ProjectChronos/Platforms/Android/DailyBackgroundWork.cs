@@ -1,7 +1,7 @@
 ﻿using Android.Content;
 using AndroidX.Work;
 using Plugin.LocalNotification;
-using ProjectChronos.Model.Cist.Events;
+using ProjectChronos.Models.Cist.Events;
 using ProjectChronos.Services;
 using System.Diagnostics;
 using System.Globalization;

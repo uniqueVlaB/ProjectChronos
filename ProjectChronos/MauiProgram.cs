@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using Plugin.LocalNotification;
 using ProjectChronos.Services;
-using ProjectChronos.View;
-using ProjectChronos.View.PopUPs;
-using ProjectChronos.ViewModel;
-using ProjectChronos.ViewModel.Popups;
+using ProjectChronos.Pages;
+using ProjectChronos.Views.Popups;
+using ProjectChronos.ViewModels;
+using ProjectChronos.ViewModels.Popups;
 using UraniumUI;
 
 namespace ProjectChronos;

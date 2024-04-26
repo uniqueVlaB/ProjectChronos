@@ -1,7 +1,7 @@
 <Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:ProjectChronos"
-       xmlns:fonts="clr-namespace:ProjectChronos.Model.Consts"
+       xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
        xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
        
        x:Class="ProjectChronos.AppShell">
@@ -9,15 +9,15 @@
 
         <Tab Title="Events"
             Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Timetable}}">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.MainPage}" />
         </Tab>
         <Tab Title="Deadlines"
      Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.ClockAlert}}">
-            <ShellContent ContentTemplate="{DataTemplate local:View.DeadlinesPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.DeadlinesPage}" />
         </Tab>
         <Tab Title="Menu"
             Icon="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Menu}}">
-            <ShellContent ContentTemplate="{DataTemplate local:MenuPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Pages.MenuPage}" />
         </Tab>
         
     </TabBar>

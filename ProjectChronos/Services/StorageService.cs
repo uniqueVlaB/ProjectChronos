@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using ProjectChronos.Model.App.Deadlines;
-using ProjectChronos.Model.Cist.Events;
+using ProjectChronos.Models.App.Deadlines;
+using ProjectChronos.Models.Cist.Events;
 using System.Xml.Serialization;
 
 namespace ProjectChronos.Services

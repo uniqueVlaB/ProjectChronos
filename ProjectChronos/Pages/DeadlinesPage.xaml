@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<uranium:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.Pages.DeadlinesPage"
+             xmlns:model="clr-namespace:ProjectChronos.Models.App.Deadlines"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModels"
+             x:DataType="viewModel:DeadlinesPageViewModel"
+             xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
+             xmlns:uMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:drawable="clr-namespace:ProjectChronos.Graphics"
+                             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="{Binding Title}">
+   
+    
+<Grid x:Name="PageContainer">
+        <ScrollView x:Name="DeadlinesContainer">
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding Deadlines}" Margin="0,0,0,60">
+
+                    <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="model:DeadlineInfo">
+                            <ContentView>
+                                <FlyoutBase.ContextFlyout >
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Delete"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=LeftSwipeCommand}"
+                                                        CommandParameter="{Binding .}">
+                                          
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                            <SwipeView x:Name="Swipe" Threshold="100" Margin="10">
+                                <SwipeView.LeftItems>
+                                        <SwipeItems Mode="Execute">
+                                            <SwipeItem  IconImageSource="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Delete}, Color=Red}" 
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=LeftSwipeCommand}"
+                                                    CommandParameter="{Binding .}">
+
+                                            </SwipeItem>
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItem IconImageSource="dotnet_bot.svg" >
+
+                                    </SwipeItem>
+                                </SwipeView.RightItems>
+                                   
+
+
+                                <Border  BackgroundColor="Black" Padding="10" Stroke="White" StrokeShape="RoundRectangle 10">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer  Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=ShowBottomDeadlineDetailsSheetCommand}"
+                                                               CommandParameter="{Binding}"/>
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="auto,*">
+                                            
+                                            <BoxView Grid.Column="0" Color="Red" VerticalOptions="Fill" WidthRequest="5" Margin="0,0,5,0"/>
+                                            <VerticalStackLayout Grid.Column="1">
+                                                
+                                                <Grid ColumnDefinitions="*,auto">
+                                                    <Label Grid.Column="0" Text="{Binding Title}" FontSize="Title"/>
+                                                    <VerticalStackLayout Grid.Column="1">
+                                                        
+                                                        <Label Text="{Binding DeadlineTimeString}"/>
+
+                                                        <!--<GraphicsView Drawable="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=Progress}"
+                                                                      HeightRequest="25"
+                                                                      WidthRequest="50"     
+                                                                      VerticalOptions="EndAndExpand"
+                                                                      HorizontalOptions="EndAndExpand"
+                                                                      />-->
+                                                       
+                                                    </VerticalStackLayout>
+                                                </Grid>
+                                                
+                                                <Grid ColumnDefinitions="*,*"
+                                                      
+                                                      RowDefinitions="auto,auto">
+
+                                                    <Border BackgroundColor="Black"
+                                                            Padding="10"
+                                                            Margin="5,0,-1,5"
+                                                            Stroke="White"
+                                                            StrokeShape="RoundRectangle 10"
+                                                            Grid.Column="0"
+                                                            Grid.Row="1">
+                                                        <Label Text="{Binding Description}"  FontSize="Default" BackgroundColor="Black"/>
+                                                    </Border>
+                                                    <Label BackgroundColor="Black"
+                                                           HorizontalOptions="Start"   
+                                                           FontSize="12"
+                                                           Text="Description"
+                                                           Margin="15,0,0,-8"
+                                                           Grid.Column="0"
+                                                           Grid.Row="0"/>
+
+                                                    <Border BackgroundColor="Black"
+                                                        Padding="10"
+                                                        Margin="-1,0,5,5"
+                                                        Stroke="White"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Grid.Column="1"
+                                                           Grid.Row="1">
+
+                                                        <Grid ColumnDefinitions="*,auto">
+
+                                                            <CollectionView ItemsSource="{Binding Tasks}" Margin="5,3,0,0">
+                                                                <CollectionView.ItemTemplate>
+                                                                    <DataTemplate x:DataType="model:Task">
+                                                                        <HorizontalStackLayout>
+                                                                            <uMaterial:CheckBox IsChecked="{Binding IsCompleted}" IsDisabled="True"/>
+                                                                            <Label Text="{Binding Text}"/>
+                                                                        </HorizontalStackLayout>
+
+                                                                       
+                                                                    </DataTemplate>
+                                                                </CollectionView.ItemTemplate>
+                                                            </CollectionView>
+                                                            
+                                                        </Grid>
+                                                    </Border>
+                                                    <Label BackgroundColor="Black"
+                                                           HorizontalOptions="Start"
+                                                           FontSize="12"
+                                                           Text="Tasks"
+                                                           Margin="15,0,0,-8"
+                                                           Grid.Column="1"
+                                                           Grid.Row="0"/>
+                                                    
+                                                </Grid>
+                                                
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </SwipeView>
+                            </ContentView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--<Border x:Name="ScreenFiller"  BackgroundColor="White" Opacity="0.35" IsVisible="False">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ScreenFiller_Tapped"/>
+            </Border.GestureRecognizers>
+        </Border>
+
+        <VerticalStackLayout x:Name="ActionBtnStack"
+                             IsVisible="True"
+                             HorizontalOptions="End"
+                             VerticalOptions="End"
+                             Margin="0,0,-199,80">
+            <Button TextColor="DarkBlue"
+                    FontSize="16"
+                    Text="Add to existing subject"
+                    Margin="0,0,0,10"
+                    CornerRadius="20"
+                    />
+            <Button TextColor="DarkBlue"
+                    FontSize="16"
+                    Text="Add custom deadline"
+                    Margin="0,0,0,10"
+                    CornerRadius="20"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=AddCustomDeadlineCommand}"
+                    Clicked="FABbtn_Clicked"
+                    />
+        </VerticalStackLayout>-->
+        <Button 
+            x:Name="FABbtn"
+            BackgroundColor="Green"
+            CornerRadius="50"
+            HeightRequest="60"
+            WidthRequest="60"
+            Padding="0,-4,0,0"
+            Margin="0,0,10,10"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Command="{Binding AddCustomDeadlineCommand}"
+            Text="+"
+            TextColor="White"
+            FontSize="48"
+            />
+        
+    </Grid>
+    <!--<uranium:UraniumContentPage.Attachments>
+        <uMaterial:BottomSheetView BackgroundColor="Transparent" IsPresented="{Binding IsBottomSheetPresented}" CloseOnTapOutside="True">
+            <uMaterial:BottomSheetView.Effects>
+                <uranium:BlurEffect AccentOpacity="0.1"/>
+            </uMaterial:BottomSheetView.Effects>
+            --><!--<uMaterial:BottomSheetView.Header>
+                <Border HorizontalOptions="Fill" BackgroundColor="{StaticResource Gray600}" StrokeShape="RoundRectangle 30,30,0,0" HeightRequest="20" IsVisible="{Binding IsBottomSheetPresented}">
+                    <VerticalStackLayout>
+                        --><!--<BoxView Color="White" WidthRequest="40" HeightRequest="5" CornerRadius="50"/>--><!--
+                        <Border Margin="0,5,0,0" HeightRequest="9" WidthRequest="40" StrokeShape="RoundRectangle 30" BackgroundColor="White"/>
+                    </VerticalStackLayout>
+                </Border>
+            </uMaterial:BottomSheetView.Header>--><!--
+
+            <Border HorizontalOptions="Fill" BackgroundColor="{StaticResource Gray900}" StrokeShape="RoundRectangle 0,0,0,0" HeightRequest="500">
+
+                <VerticalStackLayout Padding="10">
+                    <Border BackgroundColor="Transparent" Stroke="{StaticResource Gray600}" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding DeadlineObj.Title}" FontSize="Title"/>
+                            <Grid ColumnDefinitions="auto,*" Padding="0,10,0,0">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <HorizontalStackLayout>
+                                        <Label Text="Importance:"/>
+                                        <Label Text="{Binding DeadlineObj.Priority}" Margin="5,0,0,0"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Is in process:"/>
+                                        <Label Text="{Binding DeadlineObj.IsInProcess}" Margin="5,0,0,0"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Set time:"/>
+                                        <Label Text="{Binding DeadlineObj.SetTime}" Margin="5,0,0,0"/>
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+                                <Border Grid.Column="2"
+                                       Margin="10,0,0,0"
+                                       BackgroundColor="Transparent"
+                                       Stroke="{StaticResource Gray600}"
+                                       Padding="5"
+                                       StrokeShape="RoundRectangle 10"
+                                       >
+                                    <Label Text="{Binding DeadlineObj.Description}" />
+                                </Border>
+                            </Grid>
+                            <Border Margin="0,10,0,0"
+                                    BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}"
+                                    Padding="5"
+                                    StrokeShape="RoundRectangle 10"
+                                    >
+                                <CollectionView ItemsSource="{Binding DeadlineObj.Tasks}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Task">
+                                            <VerticalStackLayout>
+                                                <Label Text="{Binding Text}"/>
+                                            </VerticalStackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    
+                </VerticalStackLayout>
+            </Border>
+        </uMaterial:BottomSheetView>
+    </uranium:UraniumContentPage.Attachments>-->
+</uranium:UraniumContentPage>
