@@ -11,6 +11,7 @@ using ProjectChronos.ViewModels.Popups;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mopups.Services;
 using Plugin.LocalNotification;
+
 using ProjectChronos.Services;
 
 
@@ -19,6 +20,8 @@ namespace ProjectChronos.ViewModels
 {
     public partial class MenuPageViewModel : BaseViewModel
     {
+        bool firstEnter = true;
+
         [ObservableProperty]
         public string selectedGroup = Preferences.Get("GroupName","");
         [ObservableProperty]
@@ -27,7 +30,7 @@ namespace ProjectChronos.ViewModels
         public string pairNowString;
         [ObservableProperty]
         bool remindEnabled;
-        WorkService workService;
+        IWorkService workService;
         //public bool RemindEnabled
         //{
         //    get { return _remindEnabled; }
@@ -43,7 +46,7 @@ namespace ProjectChronos.ViewModels
         //    }
         //}
 
-        public MenuPageViewModel(WorkService workService)
+        public MenuPageViewModel(IWorkService workService)
         {
             this.workService = workService;
             RemindEnabled = bool.Parse(Preferences.Get("DailyWorkEnabled", bool.FalseString));
@@ -72,19 +75,45 @@ namespace ProjectChronos.ViewModels
         }
 
         [RelayCommand]
-        Task ToggleRemindPairs()
+        async Task ToggleRemindPairsAsync()
         {
-            if(RemindEnabled)
-                workService.StartDailyWork();
-            else 
-                workService.StopDailyWork();
-
-            //if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+            //if (firstEnter) 
             //{
-            //    await LocalNotificationCenter.Current.RequestNotificationPermission();
+            //    firstEnter = false;
+            //    return;
             //}
+           
+
+            if (LocalNotificationCenter.Current.AreNotificationsEnabled().Result == false)
+            {
+              
+                var userAllowedPermissionRequest = await Shell.Current.DisplayAlert($"No permisson.", "Notifications permission required for reminders." +
+                    "\nWould you like to allow notifications?", "Yes", "No");
+                if(!userAllowedPermissionRequest)
+                {
+                    RemindEnabled = false;
+                    Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
+                    return;
+                }
+
+                var userAllowedNotifications =  await LocalNotificationCenter.Current.RequestNotificationPermission();
+                if (!userAllowedNotifications) 
+                {
+                    RemindEnabled = false;
+                    Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
+                    return;
+                }
+            }
+
+            if (!RemindEnabled)
+            {
+                await workService.StopDailyWork();
+            }
+            else 
+            {
+                await workService.StartDailyWork();
+            }
             Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
-            return Task.CompletedTask;
         }
 
         [RelayCommand]

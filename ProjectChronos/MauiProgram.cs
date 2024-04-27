@@ -9,6 +9,8 @@ using ProjectChronos.Views.Popups;
 using ProjectChronos.ViewModels;
 using ProjectChronos.ViewModels.Popups;
 using UraniumUI;
+using ProjectChronos.Platforms.Android.Services;
+
 
 namespace ProjectChronos;
 
@@ -47,7 +49,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<DeadlinesPageViewModel>();
         builder.Services.AddSingleton<DeadlinesPage>();
 		builder.Services.AddTransient<AddDeadlinePage>();
-        builder.Services.AddSingleton<WorkService>();
+        builder.Services.AddSingleton<IWorkService, WorkService>();
 
         return builder.Build();
 	}

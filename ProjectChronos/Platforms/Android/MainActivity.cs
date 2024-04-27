@@ -6,7 +6,6 @@ using AndroidX.Work;
 using CommunityToolkit.Mvvm.Messaging;
 using Java.Util;
 using Plugin.LocalNotification;
-using ProjectChronos.Droid;
 using System;
 
 

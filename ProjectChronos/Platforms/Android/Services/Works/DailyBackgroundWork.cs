@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ProjectChronos.Droid
+namespace ProjectChronos.Platforms.Android.Services.Works
 {
     public class DailyBackgroundWork : Worker
     {
@@ -40,9 +40,9 @@ namespace ProjectChronos.Droid
                         Schedule = new NotificationRequestSchedule
                         {
                             NotifyTime = Event.StartTime.AddMinutes(-15)
-                            },
-                        };
-                        LocalNotificationCenter.Current.Show(in15min);
+                        },
+                    };
+                    LocalNotificationCenter.Current.Show(in15min);
                     NotificationRequest ontime = new NotificationRequest
                     {
                         NotificationId = (int)(Event.LessonId / 2),
@@ -63,7 +63,8 @@ namespace ProjectChronos.Droid
             return Result.InvokeSuccess();
         }
 
-        void sendNowNotif(int offset, string text) {
+        void sendNowNotif(int offset, string text)
+        {
             NotificationRequest miRequest = new NotificationRequest
             {
                 NotificationId = Random.Shared.Next(),
@@ -73,7 +74,7 @@ namespace ProjectChronos.Droid
                 BadgeNumber = 42,
                 Schedule = new NotificationRequestSchedule
                 {
-                    NotifyTime = DateTime.Now.AddSeconds(offset), 
+                    NotifyTime = DateTime.Now.AddSeconds(offset),
                 },
             };
             LocalNotificationCenter.Current.Show(miRequest);
