@@ -166,7 +166,7 @@ namespace ProjectChronos.ViewModels
                 case "laboratory":
                     return Colors.Purple;
                 case "consultation":
-                    return Colors.Azure;
+                    return Colors.LightSeaGreen;
                 case "test":
                     return Colors.DarkTurquoise;
                 case "exam":

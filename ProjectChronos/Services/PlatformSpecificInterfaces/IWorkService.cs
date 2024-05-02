@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectChronos.Services
+namespace ProjectChronos.Services.PlatformSpecificInterfaces
 {
     public interface IWorkService
     {

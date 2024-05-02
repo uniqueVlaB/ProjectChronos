@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectChronos.Platforms.Android.Services.Works;
-using ProjectChronos.Services;
 using AndroidX.Work;
+using ProjectChronos.Services.PlatformSpecificInterfaces;
 
 namespace ProjectChronos.Platforms.Android.Services
 {

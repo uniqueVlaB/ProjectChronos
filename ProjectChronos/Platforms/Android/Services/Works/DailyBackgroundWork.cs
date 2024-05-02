@@ -26,7 +26,7 @@ namespace ProjectChronos.Platforms.Android.Services.Works
 
             foreach (var Event in timetable.Events)
             {
-                if (Event.StartTime.Date == DateTime.Today && Event.StartTime > DateTime.Now || Event.StartTime.Date == DateTime.Today.AddDays(1))
+                if ((Event.StartTime.Date == DateTime.Today && Event.StartTime > DateTime.Now) || Event.StartTime.Date == DateTime.Today.AddDays(1))
                 {
                     var lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId));
 

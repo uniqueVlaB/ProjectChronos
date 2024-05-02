@@ -18,20 +18,10 @@ namespace ProjectChronos.Models.App.Deadlines
             set { return; }
         }
 
-        private List<Task> _tasks;
-        public List<Task> Tasks
-        {
-            get { return _tasks; }
-            set
-            {
-                _tasks = value;
-                IsInProcess = _tasks.Any(t => t.IsInProcess);
-            }
-        }
-
         public Priority Priority { get; set; }
 
         public bool IsInProcess { get;  set; }
+        public bool IsCompleted { get; set; }
 
         //public int NumOfCompletedTasks { get { return _tasks.Where(t => t.IsCompleted).Count();} set { NumOfCompletedTasks = value; } }
     }

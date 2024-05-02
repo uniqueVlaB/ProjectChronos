@@ -9,7 +9,8 @@
              xmlns:uMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:drawable="clr-namespace:ProjectChronos.Graphics"
-                             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:v="clr-namespace:ProjectChronos.Views.Widgets"
              Title="{Binding Title}">
    
     
@@ -31,110 +32,7 @@
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
                             </FlyoutBase.ContextFlyout>
-                            <SwipeView x:Name="Swipe" Threshold="100" Margin="10">
-                                <SwipeView.LeftItems>
-                                        <SwipeItems Mode="Execute">
-                                            <SwipeItem  IconImageSource="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Delete}, Color=Red}" 
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=LeftSwipeCommand}"
-                                                    CommandParameter="{Binding .}">
-
-                                            </SwipeItem>
-                                        </SwipeItems>
-                                    </SwipeView.LeftItems>
-                                <SwipeView.RightItems>
-                                    <SwipeItem IconImageSource="dotnet_bot.svg" >
-
-                                    </SwipeItem>
-                                </SwipeView.RightItems>
-                                   
-
-
-                                <Border  BackgroundColor="Black" Padding="10" Stroke="White" StrokeShape="RoundRectangle 10">
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer  Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=ShowBottomDeadlineDetailsSheetCommand}"
-                                                               CommandParameter="{Binding}"/>
-                                        </Border.GestureRecognizers>
-                                        <Grid ColumnDefinitions="auto,*">
-                                            
-                                            <BoxView Grid.Column="0" Color="Red" VerticalOptions="Fill" WidthRequest="5" Margin="0,0,5,0"/>
-                                            <VerticalStackLayout Grid.Column="1">
-                                                
-                                                <Grid ColumnDefinitions="*,auto">
-                                                    <Label Grid.Column="0" Text="{Binding Title}" FontSize="Title"/>
-                                                    <VerticalStackLayout Grid.Column="1">
-                                                        
-                                                        <Label Text="{Binding DeadlineTimeString}"/>
-
-                                                        <!--<GraphicsView Drawable="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=Progress}"
-                                                                      HeightRequest="25"
-                                                                      WidthRequest="50"     
-                                                                      VerticalOptions="EndAndExpand"
-                                                                      HorizontalOptions="EndAndExpand"
-                                                                      />-->
-                                                       
-                                                    </VerticalStackLayout>
-                                                </Grid>
-                                                
-                                                <Grid ColumnDefinitions="*,*"
-                                                      
-                                                      RowDefinitions="auto,auto">
-
-                                                    <Border BackgroundColor="Black"
-                                                            Padding="10"
-                                                            Margin="5,0,-1,5"
-                                                            Stroke="White"
-                                                            StrokeShape="RoundRectangle 10"
-                                                            Grid.Column="0"
-                                                            Grid.Row="1">
-                                                        <Label Text="{Binding Description}"  FontSize="Default" BackgroundColor="Black"/>
-                                                    </Border>
-                                                    <Label BackgroundColor="Black"
-                                                           HorizontalOptions="Start"   
-                                                           FontSize="12"
-                                                           Text="Description"
-                                                           Margin="15,0,0,-8"
-                                                           Grid.Column="0"
-                                                           Grid.Row="0"/>
-
-                                                    <Border BackgroundColor="Black"
-                                                        Padding="10"
-                                                        Margin="-1,0,5,5"
-                                                        Stroke="White"
-                                                        StrokeShape="RoundRectangle 10"
-                                                        Grid.Column="1"
-                                                           Grid.Row="1">
-
-                                                        <Grid ColumnDefinitions="*,auto">
-
-                                                            <CollectionView ItemsSource="{Binding Tasks}" Margin="5,3,0,0">
-                                                                <CollectionView.ItemTemplate>
-                                                                    <DataTemplate x:DataType="model:Task">
-                                                                        <HorizontalStackLayout>
-                                                                            <uMaterial:CheckBox IsChecked="{Binding IsCompleted}" IsDisabled="True"/>
-                                                                            <Label Text="{Binding Text}"/>
-                                                                        </HorizontalStackLayout>
-
-                                                                       
-                                                                    </DataTemplate>
-                                                                </CollectionView.ItemTemplate>
-                                                            </CollectionView>
-                                                            
-                                                        </Grid>
-                                                    </Border>
-                                                    <Label BackgroundColor="Black"
-                                                           HorizontalOptions="Start"
-                                                           FontSize="12"
-                                                           Text="Tasks"
-                                                           Margin="15,0,0,-8"
-                                                           Grid.Column="1"
-                                                           Grid.Row="0"/>
-                                                    
-                                                </Grid>
-                                                
-                                            </VerticalStackLayout>
-                                        </Grid>
-                                    </Border>
-                                </SwipeView>
+                                <v:DeadlineCardWidget DeadlineInfo="{Binding}"/>
                             </ContentView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

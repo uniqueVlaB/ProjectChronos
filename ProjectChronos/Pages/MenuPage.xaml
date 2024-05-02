@@ -5,6 +5,7 @@
              xmlns:viewModel="clr-namespace:ProjectChronos.ViewModels"
              xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:v="clr-namespace:ProjectChronos.Views.Widgets"
              x:DataType="viewModel:MenuPageViewModel"
              x:Name="this"
              Title="Menu">
@@ -21,17 +22,11 @@
             <Image Grid.Column="2" VerticalOptions="Center" Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.ChevronRight}, Color=Gray}"/>
         </Grid>
         <BoxView HeightRequest="0.1"/>
-        <Grid Margin="10" ColumnDefinitions="Auto,*">
-            <Label Grid.Column="0" Text="Remind about beginning of pairs" FontSize="Subtitle" VerticalOptions="Center"/>
-                <Switch Grid.Column="1" HorizontalOptions="EndAndExpand" IsToggled="{Binding RemindEnabled}">
-                    <Switch.Behaviors>
-                        <toolkit:EventToCommandBehavior EventName="Toggled" 
-                            Command="{Binding Source={x:Reference this}, Path=BindingContext.ToggleRemindPairsCommand}"
-                            />
-                    </Switch.Behaviors>
-                </Switch>
-        </Grid>
-        <!--<BoxView HeightRequest="0.1"/>
+            <v:ToggleParameterWidget Title="Remind about pairs beginning"
+                                     IsToggled="{Binding RemindEnabled}"
+                                     ToggledCommand="{Binding Source={x:Reference this}, Path=BindingContext.ToggleRemindPairsCommand}"/>
+
+            <!--<BoxView HeightRequest="0.1"/>
         <Label Margin="0,10,0,0" Text="Test section" HorizontalOptions="Center"/>
         <Frame Margin="5,5,5,5" CornerRadius="20" BorderColor="Gray" BackgroundColor="Transparent">
             <VerticalStackLayout>
@@ -46,7 +41,7 @@
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </Frame>-->
-        <Button Text="Push test notification" Margin="20,10,20,10" BackgroundColor="Gray" TextColor="White" Clicked="Button_Clicked"/>
-    </VerticalStackLayout>
+            <Button Text="Push test notification" Margin="20,10,20,10" BackgroundColor="Gray" TextColor="White" Clicked="Button_Clicked"/>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

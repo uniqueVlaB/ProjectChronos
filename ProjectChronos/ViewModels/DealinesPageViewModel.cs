@@ -50,21 +50,7 @@ namespace ProjectChronos.ViewModels
             //};
             //for(int i = 0; i < 15;i++) Deadlines.Add(d);
         }
-        [RelayCommand]
-         void SetProgressCircle(DeadlineInfo info)
-        {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                if (info is null)
-                {
-                    Shell.Current.DisplayAlert("Error!", "info is null", "OK");
-                    return;
-                }
-                Progress.TotalTasks = info.Tasks.Count;
-                Progress.NumOfCompletedTasks = info.Tasks.Select(t => t.IsCompleted).Count();
-            });
-            
-        }
+      
 
         [RelayCommand]
         async Task LeftSwipeAsync(DeadlineInfo info) {
@@ -134,7 +120,8 @@ namespace ProjectChronos.ViewModels
                 DeadlineObj.DeadlineTime += TimeObj;
                 DeadlineObj.Id = Guid.NewGuid();
                 DeadlineObj.SetTime = DateTime.Now;
-                DeadlineObj.Tasks = Tasks.Where(t => t.Text != string.Empty).ToList();
+                DeadlineObj.IsInProcess = false;
+                DeadlineObj.IsCompleted = false;
                 Deadlines.Add(DeadlineObj); 
             }
             StorageService.SaveDeadlines(Deadlines.ToList());
