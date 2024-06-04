@@ -76,13 +76,6 @@ namespace ProjectChronos.ViewModels
         [RelayCommand]
         async Task ToggleRemindPairsAsync()
         {
-            //if (firstEnter) 
-            //{
-            //    firstEnter = false;
-            //    return;
-            //}
-           
-
             if (LocalNotificationCenter.Current.AreNotificationsEnabled().Result == false)
             {
               

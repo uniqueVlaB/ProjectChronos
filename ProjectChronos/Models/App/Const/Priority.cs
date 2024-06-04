@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace ProjectChronos.Models.App.Const
 {
     public enum Priority {
-    High,
+    Low,
     Normal,
-    Low
+    High
     }
 }

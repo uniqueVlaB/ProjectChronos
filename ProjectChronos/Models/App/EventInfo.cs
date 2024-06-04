@@ -6,6 +6,7 @@ namespace ProjectChronos.Models.App
 {
     public class EventInfo
     {
+        public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public Lesson Lesson { get; set; }
@@ -19,10 +20,22 @@ namespace ProjectChronos.Models.App
         private List<Group> _groups;
         public List<Group> Groups { get { return _groups; } set { _groups = value; ComposeGroupString(); } }
         public Color Color { get; set; }
-        public string backgroundName { get; set; } = "none";
+        public string Location { get; set; }
 
         public string GroupsString { get; private set; }
         public string TeachersString { get; private set; }
+
+        public string AppointmentString 
+        { 
+            get 
+            {
+                return $"{Lesson.ShortName}\n{StartTime.ToString("HH:mm")}\n   {EndTime.ToString("HH:mm")}";
+            } 
+            set 
+            {
+                return;
+            } 
+        }
 
         private void ComposeGroupString() {
             string str = string.Empty;
@@ -36,6 +49,7 @@ namespace ProjectChronos.Models.App
                     str += ", " + _groups[i].Name;
                 }
                 GroupsString = str;
+                
             }
         }
         private void ComposeTeachersString()

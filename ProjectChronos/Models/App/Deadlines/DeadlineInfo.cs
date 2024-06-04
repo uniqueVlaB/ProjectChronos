@@ -17,12 +17,22 @@ namespace ProjectChronos.Models.App.Deadlines
             get { return DeadlineTime.ToString("dd.MM.yyyy HH:mm"); }
             set { return; }
         }
-
+        public Color PriorityColor
+        {
+            get
+            {
+                return Priority switch
+                {
+                    Priority.Low => Colors.Green,
+                    Priority.High => Colors.Red,
+                    Priority.Normal => Colors.Gold,
+                    _ => Colors.White,
+                };
+            }
+            set { return; }
+        }
         public Priority Priority { get; set; }
-
-        public bool IsInProcess { get;  set; }
         public bool IsCompleted { get; set; }
 
-        //public int NumOfCompletedTasks { get { return _tasks.Where(t => t.IsCompleted).Count();} set { NumOfCompletedTasks = value; } }
     }
 }

@@ -11,6 +11,8 @@ using ProjectChronos.Models.Cist.Events;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using Mopups.Services;
+using System.Globalization;
+
 
 
 namespace ProjectChronos.ViewModels
@@ -21,98 +23,79 @@ namespace ProjectChronos.ViewModels
         [ObservableProperty]
         bool isRefreshing;
         public bool IsNotRefreshing => !IsRefreshing;
-        public ObservableCollection<EventInfo> TodayEvents { get; } = new();
-        public ObservableCollection<EventInfo> TomorrowEvents { get; } = new();
-        public ObservableCollection<EventInfo> ThisWeekEvents { get; } = new();
+        public ObservableCollection<EventInfo> Events { get; } = new();
 
         CistService cistService;
         StorageService storageService;
+
         public MainPageViewModel(CistService cistService, StorageService storageService) {
             this.cistService = cistService;
             this.storageService = storageService;
+            
                 Title = Preferences.Get("GroupName", "");
                 SetEventsWithStoredTimetable();
         }
-
         void SetEventsWithStoredTimetable() {
+
             var timetable = storageService.GetTimetable();
 
             if (timetable is null) return;
             // var timetableStr = await SecureStorage.GetAsync("timetable");
 
-            var todayEvents = GetEventsInfosByDateWithOffset(timetable, DateTime.Now, 0);
+            var events = GetEventInfos(timetable);
 
-            if (TodayEvents.Count != 0)
-                TodayEvents.Clear();
+            if (Events.Count != 0)
+                Events.Clear();
 
-            foreach (var _event in todayEvents)
-                TodayEvents.Add(_event);
+            foreach (var _event in events)
+                Events.Add(_event);
 
-            var tomorrowEvents = GetEventsInfosByDateWithOffset(timetable, DateTime.Now, 1);
-
-            if (TomorrowEvents.Count != 0)
-                TomorrowEvents.Clear();
-
-            foreach (var _event in tomorrowEvents)
-                TomorrowEvents.Add(_event);
-
-            var thisWeekEvents = GetThisWeekEventsInfos(timetable, DateTime.Now);
-
-            if (ThisWeekEvents.Count != 0)
-                ThisWeekEvents.Clear();
-
-            foreach (var _event in thisWeekEvents)
-                ThisWeekEvents.Add(_event);
         }
 
         [RelayCommand]
-        async Task PopUpDetails(EventInfo eventInfo)
+        async Task PopUpDetails(DevExpress.Maui.Scheduler.SchedulerGestureEventArgs args)
         {
-            if (eventInfo == null)
-                return;
-            HapticFeedback.Perform(HapticFeedbackType.Click);
-            var popup = new EventDetailsPopUp(eventInfo);
-            await MopupService.Instance.PushAsync(popup);
+            
+                HapticFeedback.Perform(HapticFeedbackType.Click);
+                var appointmentId = args.AppointmentInfo.Appointment.Id as int?;
+                EventInfo info = new();
+
+                if (appointmentId.HasValue)
+                {
+                    info = Events.FirstOrDefault(e => e.Id == appointmentId.Value);
+
+                    if (info != null) return;
+                }
+                await MopupService.Instance.PushAsync(new EventDetailsPopUp(info));
            
         }
         [RelayCommand]
         async Task GetEventsAsync()
         {
+            var yearStart = DateTime.Parse($"01/01/{DateTime.Now.Year} 00:00:00", new CultureInfo("fr-FR", false));
+            var yearEnd = DateTime.Parse($"31/12/{DateTime.Now.Year} 23:59:59", new CultureInfo("fr-FR", false));
+
             Title = Preferences.Default.Get("GroupName", "");
             if (IsBusy) return;
 
             try 
             {
                IsBusy = true;
-                var timetable = await cistService.GetTimetableWithOffsetAsync(30);
+                var timetable = await cistService.GetTimetableAsync(yearStart, yearEnd);
                 // TODO: find something better
                 //   await SecureStorage.SetAsync("timetable", JsonConvert.SerializeObject(timetable));
                 storageService.SaveTimetable(timetable);
 
-                var todayEvents = GetEventsInfosByDateWithOffset(timetable, DateTime.Now, 0);
+                var events = GetEventInfos(timetable);
 
-                // TODO: create method that does this
-                if (TodayEvents.Count != 0)
-                    TodayEvents.Clear();
+                if (Events.Count != 0)
+                    Events.Clear();
 
-                foreach (var _event in todayEvents)
-                    TodayEvents.Add(_event);
-
-                var tomorrowEvents = GetEventsInfosByDateWithOffset(timetable, DateTime.Now, 1);
-
-                if (TomorrowEvents.Count != 0)
-                    TomorrowEvents.Clear();
-
-                foreach (var _event in tomorrowEvents)
-                    TomorrowEvents.Add(_event);
-
-                var thisWeekEvents = GetThisWeekEventsInfos(timetable, DateTime.Now);
-
-                if (ThisWeekEvents.Count != 0)
-                    ThisWeekEvents.Clear();
-
-                foreach (var _event in thisWeekEvents)
-                    ThisWeekEvents.Add(_event);
+                foreach (var _event in events)
+                {
+                    if (_event is null) continue;
+                    Events.Add(_event);
+                }
             }
             catch(Exception ex) 
             {
@@ -127,17 +110,45 @@ namespace ProjectChronos.ViewModels
             }
         }
 
-        private List<EventInfo> GetEventsInfosByDateWithOffset(Timetable timetable, DateTime time,int offset)
+        //private List<EventInfo> GetEventsInfosByDateWithOffset(Timetable timetable, DateTime start, DateTime end)
+        //{
+        //    var events = new List<EventInfo>();
+        //    foreach (var Event in timetable.Events)
+        //    {
+        //        if (Event.StartTime.Date.Equals(time.Date.AddDays(offset)))
+        //        {
+        //            var eventType = timetable.EventTypes.FirstOrDefault(et => et.Id.Equals(Event.TypeId));
+
+        //            events.Add(new EventInfo
+        //            {
+        //                StartTime = Event.StartTime,
+        //                EndTime = Event.EndTime,
+        //                FullType = eventType.FullName,
+        //                ShortType = eventType.ShortName,
+        //                BaseTypeName = eventType.EnglishBaseName,
+        //                PairNumber = Event.PairNumber,
+        //                Lesson = timetable.Lessons.FirstOrDefault(l => l.Id.Equals(Event.LessonId)),
+        //                Teachers = timetable.Teachers.Where(t => Event.TeacherIds.Contains(t.Id)).ToList(),
+        //                Groups = timetable.Groups.Where(g => Event.GroupIds.Contains(g.Id)).ToList(),
+        //                Color = GetEventColorByType(eventType.EnglishBaseName),
+        //                backgroundName = "back2.jpg"
+
+        //            });
+        //        }
+        //    }
+        //    return events;
+        //}
+
+        private List<EventInfo> GetEventInfos(Timetable timetable)
         {
             var events = new List<EventInfo>();
             foreach (var Event in timetable.Events)
             {
-                if (Event.StartTime.Date.Equals(time.Date.AddDays(offset)))
-                {
                     var eventType = timetable.EventTypes.FirstOrDefault(et => et.Id.Equals(Event.TypeId));
-                   
+
                     events.Add(new EventInfo
                     {
+                        Id = events.Count,
                         StartTime = Event.StartTime,
                         EndTime = Event.EndTime,
                         FullType = eventType.FullName,
@@ -148,10 +159,9 @@ namespace ProjectChronos.ViewModels
                         Teachers = timetable.Teachers.Where(t => Event.TeacherIds.Contains(t.Id)).ToList(),
                         Groups = timetable.Groups.Where(g => Event.GroupIds.Contains(g.Id)).ToList(),
                         Color = GetEventColorByType(eventType.EnglishBaseName),
-                        backgroundName = "back2.jpg"
+                        Location = Event.Room
 
                     });
-                }
             }
             return events;
         }

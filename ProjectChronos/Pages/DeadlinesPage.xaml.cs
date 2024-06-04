@@ -18,6 +18,22 @@ public partial class DeadlinesPage : UraniumContentPage
        // ChangeStateOfActions();
     }
 
+    private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var collection = (CollectionView)sender;
+        collection.ScrollTo(0);
+    }
+
+    private void DeadlinesContainer_Unfocused(object sender, FocusEventArgs e)
+    {
+
+    }
+
+    private void CollectionView_Scrolled(object sender, ItemsViewScrolledEventArgs e)
+    {
+
+    }
+
     //private void ScreenFiller_Tapped(object sender, TappedEventArgs e)
     //{
     //    if (ScreenFiller.IsVisible) ChangeStateOfActions();
