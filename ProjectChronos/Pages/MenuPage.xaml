@@ -44,8 +44,7 @@
                       Title="Remind about deadlines"
                       Padding="10,0,0,0" Margin="0,5,0,0"
                       IsToggled="{Binding DeadlineRemindEnabled}"
-                      ToggledCommand="{Binding Source={x:Reference this},
-Path=BindingContext.ToggleDeadlineRemindCommand}"/>
+                      ToggledCommand="{Binding Source={x:Reference this},Path=BindingContext.ToggleDeadlineRemindCommand}"/>
         </VerticalStackLayout>
     </ScrollView>
 

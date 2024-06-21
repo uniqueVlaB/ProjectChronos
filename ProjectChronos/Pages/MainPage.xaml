@@ -15,15 +15,9 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem x:DataType="viewModel:MainPageViewModel" IconImageSource="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Refresh}}" Command="{Binding GetEventsCommand}"/>
-
     </ContentPage.ToolbarItems>
-    <RefreshView
-            Command="{Binding GetEventsCommand}"
-            IsRefreshing="{Binding IsRefreshing}">
-        <ScrollView >
-            <Grid RowDefinitions="auto,*">
-                <dxsch:WorkWeekView Grid.Row="1" 
-                                    WorkTime="07:00:00-21:00:00"
+
+    <dxsch:WorkWeekView     WorkTime="07:00:00-21:00:00"
                                     ShowWorkTimeOnly="True"
                                     TimeScaleSlotCount="1"
                                     SnapToCellsMode="Never"
@@ -33,59 +27,54 @@
                                     WorkDays="WorkDays,Saturday,Sunday"
                                     FirstDayOfWeek="Monday">
 
- 
-                    <dxsch:WorkWeekView.CellAppearance>
-                        <dxsch:DayViewCellAppearance BackgroundColor="Black"
-                                                     WorkTimeBackgroundColor="Black"
-                                                     TodayBackgroundColor="{StaticResource Gray900}"/>
-                    </dxsch:WorkWeekView.CellAppearance>
-                    <dxsch:WorkWeekView.HeaderItemAppearance>
-                        <dxsch:DayViewHeaderItemAppearance BackgroundColor="Black"/>
-                    </dxsch:WorkWeekView.HeaderItemAppearance>
-                    <dxsch:WorkWeekView.AllDayCellAppearance>
-                        <dxsch:AllDayAreaCellAppearance BackgroundColor="Black"/>
-                    </dxsch:WorkWeekView.AllDayCellAppearance>
-                    <dxsch:WorkWeekView.TimeRulerHeaderAppearance>
-                        <dxsch:TimeRulerHeaderAppearance BackgroundColor="Black"/>
-                    </dxsch:WorkWeekView.TimeRulerHeaderAppearance>
-                    <dxsch:WorkWeekView.TimeRulerCellAppearance>
-                        <dxsch:TimeRulerCellAppearance IntervalLabelFormat="{}{0:HH:mm}" BackgroundColor="Black"/>
-                    </dxsch:WorkWeekView.TimeRulerCellAppearance>
-                    <dxsch:WorkWeekView.AppointmentAppearance>
-                        <dxsch:AppointmentAppearance>
-                            <dxsch:AppointmentAppearance.Customizer>
-                                <graph:AppointmentCustomizer/>
-                            </dxsch:AppointmentAppearance.Customizer>
-                        </dxsch:AppointmentAppearance>
-                    </dxsch:WorkWeekView.AppointmentAppearance>
-                    <dxsch:WorkWeekView.DataStorage  >
-                        <dxsch:SchedulerDataStorage TimeZone="Europe/Kyiv"  >
-                            <dxsch:SchedulerDataStorage.DataSource >
-                                <dxsch:DataSource AppointmentsSource="{Binding Events}" AppointmentLabelsSource="{Binding Events}"   >
-                                    <dxsch:DataSource.AppointmentLabelMappings >
-                                        <dxsch:AppointmentLabelMappings Color="Color" Id="Id" Caption="Location" />
-                                    </dxsch:DataSource.AppointmentLabelMappings>
-                                    <dxsch:DataSource.AppointmentMappings>
-                                        <dxsch:AppointmentMappings Id="Id"
+        <dxsch:WorkWeekView.CellAppearance>
+            <dxsch:DayViewCellAppearance BackgroundColor="Black"
+                                                 WorkTimeBackgroundColor="Black"
+                                                 TodayBackgroundColor="{StaticResource Gray900}"/>
+        </dxsch:WorkWeekView.CellAppearance>
+        <dxsch:WorkWeekView.HeaderItemAppearance>
+            <dxsch:DayViewHeaderItemAppearance BackgroundColor="Black"/>
+        </dxsch:WorkWeekView.HeaderItemAppearance>
+        <dxsch:WorkWeekView.AllDayCellAppearance>
+            <dxsch:AllDayAreaCellAppearance BackgroundColor="Black"/>
+        </dxsch:WorkWeekView.AllDayCellAppearance>
+        <dxsch:WorkWeekView.TimeRulerHeaderAppearance>
+            <dxsch:TimeRulerHeaderAppearance BackgroundColor="Black"/>
+        </dxsch:WorkWeekView.TimeRulerHeaderAppearance>
+        <dxsch:WorkWeekView.TimeRulerCellAppearance>
+            <dxsch:TimeRulerCellAppearance IntervalLabelFormat="{}{0:HH:mm}" BackgroundColor="Black"/>
+        </dxsch:WorkWeekView.TimeRulerCellAppearance>
+        <dxsch:WorkWeekView.AppointmentAppearance>
+            <dxsch:AppointmentAppearance>
+                <dxsch:AppointmentAppearance.Customizer>
+                    <graph:AppointmentCustomizer/>
+                </dxsch:AppointmentAppearance.Customizer>
+            </dxsch:AppointmentAppearance>
+        </dxsch:WorkWeekView.AppointmentAppearance>
+        <dxsch:WorkWeekView.DataStorage  >
+            <dxsch:SchedulerDataStorage TimeZone="Europe/Kyiv"  >
+                <dxsch:SchedulerDataStorage.DataSource >
+                    <dxsch:DataSource AppointmentsSource="{Binding Events}" AppointmentLabelsSource="{Binding Events}"   >
+                        <dxsch:DataSource.AppointmentLabelMappings >
+                            <dxsch:AppointmentLabelMappings Color="Color" Id="Id" Caption="Location" />
+                        </dxsch:DataSource.AppointmentLabelMappings>
+                        <dxsch:DataSource.AppointmentMappings>
+                            <dxsch:AppointmentMappings Id="Id"
                                Start="StartTime" End="EndTime" 
                                Subject="AppointmentString"
                                LabelId="Id" Location="ShortType"/>
-                                    </dxsch:DataSource.AppointmentMappings>
-                                </dxsch:DataSource>
-                            </dxsch:SchedulerDataStorage.DataSource>
-                        </dxsch:SchedulerDataStorage>
-                    </dxsch:WorkWeekView.DataStorage>
-                    <dxsch:WorkWeekView.AppointmentTemplate >
-                        <DataTemplate x:DataType="dxsch:AppointmentViewModel">
-                            <Grid BackgroundColor="{Binding BackgroundColor}">
-                                <Label FontSize="13" Text="{Binding Appointment.Subject}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </dxsch:WorkWeekView.AppointmentTemplate>
-
-                </dxsch:WorkWeekView>
-            </Grid>
-        </ScrollView>
-    </RefreshView>
+                        </dxsch:DataSource.AppointmentMappings>
+                    </dxsch:DataSource>
+                </dxsch:SchedulerDataStorage.DataSource>
+            </dxsch:SchedulerDataStorage>
+        </dxsch:WorkWeekView.DataStorage>
+        <dxsch:WorkWeekView.AppointmentTemplate >
+            <DataTemplate x:DataType="dxsch:AppointmentViewModel">
+                <Grid BackgroundColor="{Binding BackgroundColor}">
+                    <Label FontSize="13" Text="{Binding Appointment.Subject}"/>
+                </Grid>
+            </DataTemplate>
+        </dxsch:WorkWeekView.AppointmentTemplate>
+    </dxsch:WorkWeekView>
 </ContentPage>
 

@@ -99,9 +99,6 @@
 	  <MauiXaml Update="Views\Widgets\DeadlineCardWidget.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Widgets\MonthScheduleViewWidget.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\Widgets\ToggleParameterWidget.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

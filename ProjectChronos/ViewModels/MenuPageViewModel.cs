@@ -64,7 +64,7 @@ namespace ProjectChronos.ViewModels
         }
 
         [RelayCommand]
-        async Task ToggleRemindDeadlinesAsync()
+        async Task ToggleDeadlineRemindAsync()
         {
             if (!DeadlineRemindEnabled)
             {

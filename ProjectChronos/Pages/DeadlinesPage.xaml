@@ -16,7 +16,7 @@
 
 
     <Grid x:Name="PageContainer" RowDefinitions="auto,*">
-        <Grid ColumnDefinitions="3*,*,*" Margin="20,0,0,10" Grid.Row="0">
+        <Grid ColumnDefinitions="3*,*" Margin="20,0,0,10" Grid.Row="0">
             <HorizontalStackLayout Grid.Column="0">
                 <Label Text="Sort" FontSize="Body" VerticalOptions="Center"/>
                 <VerticalStackLayout Margin="5,0,5,0" HeightRequest="40">
@@ -45,38 +45,30 @@
                 </Picker>
             </HorizontalStackLayout>
 
-
             <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" Margin="0,0,10,0">
                 <Label  Text="Filter" FontSize="Body" VerticalOptions="Center"/>
                 <ImageButton HeightRequest="35"
                              Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Filter},Color=DarkGray}"
                              Command="{Binding ChangeBottomSheetStateCommand}"/>
             </HorizontalStackLayout>
-
-            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
-                <ImageButton HeightRequest="35" Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Close},Color=Red}"/>
-                <Label Margin="0,-5,0,0" Text="Reset" HorizontalOptions="Center" VerticalOptions="Start"/>
-            </VerticalStackLayout>
-
-
         </Grid>
         <ScrollView x:Name="DeadlinesContainer" Grid.Row="1">
             <VerticalStackLayout>
-                <CollectionView ItemsSource="{Binding Deadlines}" Margin="0,0,0,60" SelectionChanged="CollectionView_SelectionChanged" Focused="DeadlinesContainer_Unfocused">
+                <CollectionView ItemsSource="{Binding Deadlines}" Margin="0,0,0,60">
 
                     <CollectionView.ItemTemplate>
 
-                    <DataTemplate x:DataType="model:DeadlineInfo">
+                        <DataTemplate x:DataType="model:DeadlineInfo">
                             <ContentView>
                                 <FlyoutBase.ContextFlyout >
                                     <MenuFlyout>
                                         <MenuFlyoutItem Text="Delete"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=DeleteCommand}"
                                                         CommandParameter="{Binding .}">
-                                          
+
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
-                            </FlyoutBase.ContextFlyout>
+                                </FlyoutBase.ContextFlyout>
                                 <v:DeadlineCardWidget DeadlineInfo="{Binding}"/>
                             </ContentView>
                         </DataTemplate>
@@ -84,33 +76,6 @@
                 </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
-
-        <!--<Border x:Name="ScreenFiller"  BackgroundColor="White" Opacity="0.35" IsVisible="False">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="ScreenFiller_Tapped"/>
-            </Border.GestureRecognizers>
-        </Border>
-
-        <VerticalStackLayout x:Name="ActionBtnStack"
-                             IsVisible="True"
-                             HorizontalOptions="End"
-                             VerticalOptions="End"
-                             Margin="0,0,-199,80">
-            <Button TextColor="DarkBlue"
-                    FontSize="16"
-                    Text="Add to existing subject"
-                    Margin="0,0,0,10"
-                    CornerRadius="20"
-                    />
-            <Button TextColor="DarkBlue"
-                    FontSize="16"
-                    Text="Add custom deadline"
-                    Margin="0,0,0,10"
-                    CornerRadius="20"
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=AddCustomDeadlineCommand}"
-                    Clicked="FABbtn_Clicked"
-                    />
-        </VerticalStackLayout>-->
         <Button 
         Grid.Row="2"
 x:Name="FABbtn"

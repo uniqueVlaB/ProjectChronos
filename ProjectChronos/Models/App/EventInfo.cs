@@ -21,7 +21,7 @@ namespace ProjectChronos.Models.App
         public List<Group> Groups { get { return _groups; } set { _groups = value; ComposeGroupString(); } }
         public Color Color { get; set; }
         public string Location { get; set; }
-
+        public string DateString { get { return StartTime.ToString("dd.MM.yyyy"); } set {return;}}
         public string GroupsString { get; private set; }
         public string TeachersString { get; private set; }
 

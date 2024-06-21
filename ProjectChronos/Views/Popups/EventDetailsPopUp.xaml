@@ -22,15 +22,8 @@
                     </Label.Text>
                 </Label>
                 <Label Grid.Column="1" Text="{Binding eventInfo.StartTime.DayOfWeek}" HorizontalOptions="Center"/>
-                <Label Grid.Column="0" TextColor="White">
-                    <Label.Text Padding="0,0,0,5">
-                        <MultiBinding StringFormat="{}{0}.{1}.{2}">
-                            <Binding Path="eventInfo.StartTime.Day" />
-                            <Binding Path="eventInfo.StartTime.Month" />
-                            <Binding Path="eventInfo.StartTime.Year" />
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
+                <Label Grid.Column="0" TextColor="White"
+                       Text="{Binding eventInfo.DateString}"/>
             </Grid>
             <Label TextColor="White" Text="{Binding eventInfo.Lesson.FullName}" Padding="0,10,0,5" HorizontalOptions="Center"/>
             <Grid ColumnDefinitions="Auto,*" Padding="0,10,0,0">

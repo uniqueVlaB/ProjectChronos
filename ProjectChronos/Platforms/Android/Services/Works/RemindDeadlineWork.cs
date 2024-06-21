@@ -27,7 +27,7 @@ namespace ProjectChronos.Platforms.Android.Services.Works
         {
             foreach (var deadline in deadlines)
             {
-                if (deadline.DeadlineTime.Date == DateTime.Today.AddDays(1))
+                if (deadline.DeadlineTime.Date == DateTime.Today.AddDays(1))    
                 {
                     NotificationRequest deadlineNotif = new NotificationRequest
                     {

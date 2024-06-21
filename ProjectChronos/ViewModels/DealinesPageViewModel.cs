@@ -177,8 +177,13 @@ namespace ProjectChronos.ViewModels
             }
             HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
             var result = await Shell.Current.DisplayAlert("Delete deadline?",$"Are you sure you want to delete deadline with id {info.Id}?","Yes","No");
-            if (result) Deadlines.Remove(info);
-            StorageService.SaveDeadlines(Deadlines.ToList());
+            if (result) 
+            { 
+                Deadlines.Remove(info);
+                deadlineInfos.Remove(info);
+                StorageService.SaveDeadlines(deadlineInfos.ToList());
+            }
+            
         }
 
         [RelayCommand]
