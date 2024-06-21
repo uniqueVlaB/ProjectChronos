@@ -10,5 +10,10 @@ namespace ProjectChronos.Services.PlatformSpecificInterfaces
     {
         public Task<bool> StartDailyWork();
         public Task<bool> StopDailyWork();
+        public Task<bool> StartPairRemindWork();
+        public Task<bool> StopPairRemindWork();
+        public Task<bool> StartDeadlineRemindWork();
+        public Task<bool> StopDeadlineRemindWork();
+
     }
 }

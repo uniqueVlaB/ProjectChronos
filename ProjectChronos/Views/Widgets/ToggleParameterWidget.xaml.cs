@@ -2,7 +2,7 @@ using System.Windows.Input;
 
 namespace ProjectChronos.Views.Widgets;
 
-public partial class ToggleParameterWidget : Grid
+public partial class ToggleParameterWidget : Border
 {
     public static readonly BindableProperty TitleProperty = BindableProperty.Create(
         nameof(Title),

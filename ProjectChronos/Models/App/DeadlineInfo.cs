@@ -1,7 +1,7 @@
 ﻿using ProjectChronos.Models.App.Const;
 
 
-namespace ProjectChronos.Models.App.Deadlines
+namespace ProjectChronos.Models.App
 {
 
     public class DeadlineInfo
@@ -10,8 +10,8 @@ namespace ProjectChronos.Models.App.Deadlines
         public Guid Id { get; set; }
         public DateTime DeadlineTime { get; set; }
         public DateTime SetTime { get; set; }
-        public string Title { get; set;}
-        public string Description { get; set;}
+        public string Title { get; set; }
+        public string Description { get; set; }
         public string DeadlineTimeString
         {
             get { return DeadlineTime.ToString("dd.MM.yyyy HH:mm"); }

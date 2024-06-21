@@ -19,8 +19,6 @@ namespace ProjectChronos.ViewModels
 {
     public partial class MenuPageViewModel : BaseViewModel
     {
-        bool firstEnter = true;
-
         [ObservableProperty]
         public string selectedGroup = Preferences.Get("GroupName","");
         [ObservableProperty]
@@ -28,84 +26,83 @@ namespace ProjectChronos.ViewModels
         [ObservableProperty]
         public string pairNowString;
         [ObservableProperty]
-        bool remindEnabled;
+        bool pairRemindEnabled;
+        [ObservableProperty]
+        bool deadlineRemindEnabled;
         IWorkService workService;
-        //public bool RemindEnabled
-        //{
-        //    get { return _remindEnabled; }
-        //    set
-        //    {
-        //        if (_remindEnabled != value)
-        //        {
-        //            _remindEnabled = value;
-        //            OnPropertyChanged();
-        //            Preferences.Set("NotificationsWorkEnabled", _remindEnabled.ToString());
-
-        //        }
-        //    }
-        //}
-
+   
         public MenuPageViewModel(IWorkService workService)
         {
             this.workService = workService;
-            RemindEnabled = bool.Parse(Preferences.Get("DailyWorkEnabled", bool.FalseString));
-           var PairBeforeName = Preferences.Get("PlannedBeforeNotifName",bool.FalseString);
-           var PairBeforeTime = Preferences.Get("PlannedBeforeNotifTime", bool.FalseString);
-           var PairName = Preferences.Get("PlannedNotifName", bool.FalseString);
-           var PairTime = Preferences.Get("PlannedNotifTime", bool.FalseString);
-            if (PairBeforeName == bool.FalseString || PairBeforeTime == bool.FalseString)
-            {
-                PairBeforeString = "Unknown";
-            }
-            else 
-            {
-                PairBeforeString = $"Pair {PairBeforeName} planned to {PairBeforeTime}";
-            }
-
-            if (PairName == bool.FalseString || PairTime == bool.FalseString)
-            {
-                PairNowString = "Unknown";
-            }
-            else
-            {
-                PairNowString = $"Pair {PairName} planned to {PairTime}";
-            }
-
+            PairRemindEnabled = bool.Parse(Preferences.Get("PairRemindEnabled", bool.FalseString));
+            DeadlineRemindEnabled = bool.Parse(Preferences.Get("DeadlineRemindEnabled", bool.FalseString));
         }
 
         [RelayCommand]
         async Task ToggleRemindPairsAsync()
         {
+            if (!PairRemindEnabled)
+            {
+                await workService.StopPairRemindWork();
+                Preferences.Set("PairRemindEnabled", bool.FalseString);
+                return;
+            }
+
             if (LocalNotificationCenter.Current.AreNotificationsEnabled().Result == false)
             {
-              
-                var userAllowedPermissionRequest = await Shell.Current.DisplayAlert($"No permisson.", "Notifications permission required for reminders." +
-                    "\nWould you like to allow notifications?", "Yes", "No");
-                if(!userAllowedPermissionRequest)
+                if (!await RequestNotificationsPermissionAsync())
                 {
-                    RemindEnabled = false;
-                    Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
-                    return;
-                }
-
-                var userAllowedNotifications =  await LocalNotificationCenter.Current.RequestNotificationPermission();
-                if (!userAllowedNotifications) 
-                {
-                    RemindEnabled = false;
-                    Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
+                    PairRemindEnabled = false;
                     return;
                 }
             }
+            if (PairRemindEnabled)
+            {
+                await workService.StartPairRemindWork();
+                Preferences.Set("PairRemindEnabled", bool.TrueString);
+            }
+        }
 
-            if (!RemindEnabled)
+        [RelayCommand]
+        async Task ToggleRemindDeadlinesAsync()
+        {
+            if (!DeadlineRemindEnabled)
             {
-                await workService.StopDailyWork();
+                await workService.StopDeadlineRemindWork();
+                Preferences.Set("DeadlineRemindEnabled", bool.FalseString);
+                return;
             }
-            else 
+
+            if (LocalNotificationCenter.Current.AreNotificationsEnabled().Result == false)
             {
-                await workService.StartDailyWork();
+                if (!await RequestNotificationsPermissionAsync())
+                {
+                    DeadlineRemindEnabled = false;
+                    return;
+                }
             }
-            Preferences.Set("DailyWorkEnabled", RemindEnabled.ToString());
+            if (DeadlineRemindEnabled)
+            {
+                await workService.StartDeadlineRemindWork();
+                Preferences.Set("DeadlineRemindEnabled", bool.TrueString);
+            }
+        }
+
+        async Task<bool> RequestNotificationsPermissionAsync() {
+
+            var userAllowedPermissionRequest = await Shell.Current.DisplayAlert($"No permisson.", "Notifications permission required for reminders." +
+                                                                               "\nWould you like to allow notifications?", "Yes", "No");
+            if (!userAllowedPermissionRequest)
+            {
+                return false;
+            }
+
+            var userAllowedNotifications = await LocalNotificationCenter.Current.RequestNotificationPermission();
+            if (!userAllowedNotifications)
+            {
+                return false;
+            }
+            return true;
         }
 
         [RelayCommand]

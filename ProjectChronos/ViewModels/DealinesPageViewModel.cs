@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.LocalNotification;
 using ProjectChronos.Graphics;
-using ProjectChronos.Models.App.Deadlines;
+using ProjectChronos.Models.App;
 using ProjectChronos.Services;
 using ProjectChronos.Pages;
 using System.Collections.ObjectModel;
@@ -52,16 +52,6 @@ namespace ProjectChronos.ViewModels
             foreach (var deadline in deadlineInfos) {
                 Deadlines.Add(deadline);
             }
-
-            //var d = new DeadlineInfo
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Title = "Title",
-            //    Description = "Примітка: Переконайтеся, що ви додали шрифт і відповідні ресурси до вашого проекту та правильно оновили ваші файли конфігурації. Якщо у вас виникли проблеми або вам потрібна додаткова допомога, будь ласка, дайте мені знати! 😊",
-            //    DeadlineTime = DateTime.Now.AddDays(Random.Shared.Next(1,30)),
-            //    SetTime = DateTime.Now.AddDays(Random.Shared.Next(1, 30)),
-            //};
-            //for(int i = 0; i < 15;i++) Deadlines.Add(d);
         }
 
         [RelayCommand]
@@ -201,42 +191,7 @@ namespace ProjectChronos.ViewModels
             TimeObj = DeadlineObj.DeadlineTime.TimeOfDay;
             await Shell.Current.Navigation.PushAsync(new AddDeadlinePage(this));
         }
-        //[RelayCommand]
-        //[Obsolete]
-        //void TaskTextEditorChanged() {
-        //    Device.BeginInvokeOnMainThread(()=>
-        //        {
-        //            try
-        //            {
-        //                if (Tasks.Count == 0 || Tasks == null) return;
-        //                for(int i = 0; i < Tasks.Count; i++)
-        //                {
-        //                    if (Tasks[i].Text == string.Empty && Tasks[i] != Tasks.Last()) Tasks.RemoveAt(i);
-        //                }
-        //                if (Tasks.Last().Text != string.Empty) Tasks.Add(new Models.App.Deadlines.Task() { Text = string.Empty });
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-        //            }
-        //        }
-        //        );
-            
-        //}
-
-        //[RelayCommand]
-        //void RemoveTask(Models.App.Deadlines.Task task) {
-        //        try {
-        //        if (task.Text == string.Empty) return;
-        //    Tasks.Remove(task);
-        //        if (Tasks.Count == 0) Tasks.Add(new Models.App.Deadlines.Task() {Text = string.Empty });
-        //    }
-        //    catch (Exception ex) {
-        //        Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-        //    }
-
-        //}
-
+       
         [RelayCommand]
         async Task SubmitDeadline()
         {
@@ -256,12 +211,5 @@ namespace ProjectChronos.ViewModels
             
             await Shell.Current.Navigation.PopAsync();
         }
-
-        //[RelayCommand]
-        //void ShowBottomDeadlineDetailsSheet(DeadlineInfo info) {
-        //DeadlineObj = info;
-        //IsBottomSheetPresented = true;
-        //}
-
     }
 }

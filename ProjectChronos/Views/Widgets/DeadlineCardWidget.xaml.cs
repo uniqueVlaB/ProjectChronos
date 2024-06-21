@@ -1,4 +1,4 @@
-using ProjectChronos.Models.App.Deadlines;
+using ProjectChronos.Models.App;
 
 namespace ProjectChronos.Views.Widgets;
 

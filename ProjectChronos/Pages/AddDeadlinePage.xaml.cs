@@ -1,5 +1,4 @@
-using Microsoft.Maui.Controls;
-using ProjectChronos.Models.App.Deadlines;
+
 using ProjectChronos.ViewModels;
 
 namespace ProjectChronos.Pages;

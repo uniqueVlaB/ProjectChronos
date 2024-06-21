@@ -2,7 +2,7 @@
 <uranium:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjectChronos.Pages.DeadlinesPage"
-             xmlns:model="clr-namespace:ProjectChronos.Models.App.Deadlines"
+             xmlns:model="clr-namespace:ProjectChronos.Models.App"
              xmlns:viewModel="clr-namespace:ProjectChronos.ViewModels"
              x:DataType="viewModel:DeadlinesPageViewModel"
              xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
@@ -149,27 +149,20 @@ FontSize="48"
                                     Padding="0,0,0,0"
                                     Command="{Binding ResetFiltersCommand}"/>
                         </Grid>
-
                         <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
-                    
-                    <Label Text="Show deadlines with priority:"/>
-                    <Grid RowDefinitions="*,*,*" ColumnDefinitions="auto,auto" HorizontalOptions="Start" RowSpacing="-10">
-                        <CheckBox IsChecked="{Binding Filters.PriorityLowSelected}" Grid.Column="0" Grid.Row="0"/>
-                        <Label Text="Low" Grid.Column="1" Grid.Row="0" VerticalOptions="Center"/>
-
+                        <Label Text="Show deadlines with priority:"/>
+                        <Grid RowDefinitions="*,*,*" ColumnDefinitions="auto,auto" HorizontalOptions="Start" RowSpacing="-10">
+                            <CheckBox IsChecked="{Binding Filters.PriorityLowSelected}" Grid.Column="0" Grid.Row="0"/>
+                            <Label Text="Low" Grid.Column="1" Grid.Row="0" VerticalOptions="Center"/>
                             <CheckBox IsChecked="{Binding Filters.PriorityNormalSelected}" Grid.Column="0" Grid.Row="1"/>
-                        <Label Text="Normal" Grid.Column="1" Grid.Row="1" VerticalOptions="Center"/>
-
+                            <Label Text="Normal" Grid.Column="1" Grid.Row="1" VerticalOptions="Center"/>
                             <CheckBox IsChecked="{Binding Filters.PriorityHighSelected}" Grid.Column="0" Grid.Row="2"/>
-                        <Label Text="High" Grid.Column="1" Grid.Row="2" VerticalOptions="Center"/>
-                    </Grid>
-                    
-                    <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
-                    
-                    <Label Text="Show by specified date:"/>
-                    <HorizontalStackLayout>
-                        <CheckBox IsChecked="{Binding Filters.DateSelected}"/>
-
+                            <Label Text="High" Grid.Column="1" Grid.Row="2" VerticalOptions="Center"/>
+                        </Grid>
+                        <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
+                        <Label Text="Show by specified date:"/>
+                        <HorizontalStackLayout>
+                            <CheckBox IsChecked="{Binding Filters.DateSelected}"/>
                             <Label Padding="0,0,10,0" Text="From:" VerticalOptions="Center"/>
                             <DatePicker Date="{Binding Filters.FromDate}" Format="dd.MM.yyyy">
                                 <DatePicker.Triggers>
@@ -178,7 +171,7 @@ FontSize="48"
                                     </DataTrigger>
                                 </DatePicker.Triggers>
                             </DatePicker>
-                        <Label Padding="10,0,10,0" VerticalOptions="Center" Text="To:"/>
+                            <Label Padding="10,0,10,0" VerticalOptions="Center" Text="To:"/>
                             <DatePicker Date="{Binding Filters.ToDate}" Format="dd.MM.yyyy">
                                 <DatePicker.Triggers>
                                     <DataTrigger TargetType="DatePicker" Binding="{Binding Filters.DateSelected}" Value="False">
@@ -186,10 +179,8 @@ FontSize="48"
                                     </DataTrigger>
                                 </DatePicker.Triggers>
                             </DatePicker>
-                    </HorizontalStackLayout>
-
-                    <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
-
+                        </HorizontalStackLayout>
+                        <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
                     <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" RowSpacing="-10">
                         <CheckBox IsChecked="{Binding Filters.OnlyUncompletedSelected}" Grid.Column="0" Grid.Row="0"/>
                         <Label  Grid.Column="1" Grid.Row="0" VerticalOptions="Center" Text="Uncompleted deadlines" />
