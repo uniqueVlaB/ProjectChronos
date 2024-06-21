@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.Pages.AddDeadlinePage"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModels"
+             xmlns:uMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:drawable="clr-namespace:ProjectChronos.Graphics"
+             x:DataType="viewModel:DeadlinesPageViewModel"
+             xmlns:model="clr-namespace:ProjectChronos.Models.App.Deadlines"
+             xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Name="this"
+             Title="{Binding AddEditPageTitle}">
+    <ContentPage.Resources>
+        <drawable:CompleteCircleDrawing x:Key="drawable" />
+    </ContentPage.Resources>
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Margin="15">
+                <Entry Placeholder="Title"
+               Text="{Binding DeadlineObj.Title}"
+               Margin="0,0,0,15"/>
+                <Editor Placeholder="Description" Text="{Binding DeadlineObj.Description}" AutoSize="TextChanges"/>
+                <HorizontalStackLayout Margin="0,15,0,15">
+                    <Label Text="Select deadline date: " FontSize="Body" VerticalOptions="Center"/>
+                    <DatePicker  Date="{Binding DeadlineObj.DeadlineTime}" WidthRequest="100" Format="dd.MM.yyyy"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Select deadline Time: " FontSize="Body" VerticalOptions="Center"/>
+                    <TimePicker Time="{Binding TimeObj}" WidthRequest="97">
+                        <TimePicker.Format>
+                            <OnPlatform x:TypeArguments="x:String">
+                                <On Platform="WinUI" Value="24HourClock" />
+                                <On Platform="Android" Value="HH:mm" />
+                            </OnPlatform>
+                        </TimePicker.Format>
+                    </TimePicker>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Set Priority:" FontSize="Body" Padding="0,15,0,15"/>
+                    <Picker  Margin="10,5,0,5" SelectedIndex="{Binding PriorityIndex}" Title="Select priority" >
+                        <Picker.MinimumHeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="WinUI" Value="50"/>
+                            </OnPlatform>
+                        </Picker.MinimumHeightRequest>
+
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Low</x:String>
+                                <x:String>Normal</x:String>
+                                <x:String>High</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </HorizontalStackLayout>
+                
+                
+                
+                <!--<Button Text="Submit"
+                    Margin="0,15,0,15"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=SubmitDeadlineCommand}"
+                    />-->
+            </VerticalStackLayout>
+        </ScrollView>
+        <ImageButton Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.CheckOutline}}"
+                 x:Name="FABbtn"
+                 BackgroundColor="Green"  
+                 HeightRequest="60"
+                 WidthRequest="60"
+                 Padding="5"
+                 Margin="0,0,10,10"
+                 HorizontalOptions="End"
+                 VerticalOptions="End"
+                 Command="{Binding SubmitDeadlineCommand}">
+            <ImageButton.CornerRadius>
+                <OnPlatform  x:TypeArguments="x:Int32">
+                    <On Platform="WinUI" Value="50"/>
+                    <On Platform="Android" Value="30"/>
+                </OnPlatform>
+            </ImageButton.CornerRadius>
+        </ImageButton>
+    </Grid>
+</ContentPage>

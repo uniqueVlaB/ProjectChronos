@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<uranium:UraniumContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectChronos.Pages.DeadlinesPage"
+             xmlns:model="clr-namespace:ProjectChronos.Models.App"
+             xmlns:viewModel="clr-namespace:ProjectChronos.ViewModels"
+             x:DataType="viewModel:DeadlinesPageViewModel"
+             xmlns:fonts="clr-namespace:ProjectChronos.Models.Consts"
+             xmlns:uMaterial="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:drawable="clr-namespace:ProjectChronos.Graphics"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:v="clr-namespace:ProjectChronos.Views.Widgets"
+             x:Name="this"
+             Title="{Binding Title}">
+
+
+    <Grid x:Name="PageContainer" RowDefinitions="auto,*">
+        <Grid ColumnDefinitions="3*,*,*" Margin="20,0,0,10" Grid.Row="0">
+            <HorizontalStackLayout Grid.Column="0">
+                <Label Text="Sort" FontSize="Body" VerticalOptions="Center"/>
+                <VerticalStackLayout Margin="5,0,5,0" HeightRequest="40">
+                    <ImageButton Margin="0,-10,0,-13"
+                         WidthRequest="35"
+                         Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, 
+                                  Glyph={Static fonts:MaterialIconsFont.ChevronUp},
+                                  Color={Binding Source={x:Reference this}, Path=BindingContext.AscendingColor}}"
+                         Command="{Binding ChangeSortStateCommand}"/>
+                    <ImageButton Margin="0,-13,0,0"
+                         WidthRequest="35"
+                         Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, 
+                                  Glyph={Static fonts:MaterialIconsFont.ChevronDown},
+                                  Color={Binding Source={x:Reference this}, Path=BindingContext.DescendingColor}}"
+                         Command="{Binding ChangeSortStateCommand}"/>
+                </VerticalStackLayout>
+                <Label Text="by" FontSize="Body" VerticalOptions="Center"/>
+                <Picker Margin="10,0,0,0" SelectedIndex="{Binding SortByIndex}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Priority</x:String>
+                            <x:String>Date</x:String>
+                            <x:String>Completion</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </HorizontalStackLayout>
+
+
+            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" Margin="0,0,10,0">
+                <Label  Text="Filter" FontSize="Body" VerticalOptions="Center"/>
+                <ImageButton HeightRequest="35"
+                             Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Filter},Color=DarkGray}"
+                             Command="{Binding ChangeBottomSheetStateCommand}"/>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                <ImageButton HeightRequest="35" Source="{FontImageSource FontFamily={StaticResource MaterialFontFamily}, Glyph={Static fonts:MaterialIconsFont.Close},Color=Red}"/>
+                <Label Margin="0,-5,0,0" Text="Reset" HorizontalOptions="Center" VerticalOptions="Start"/>
+            </VerticalStackLayout>
+
+
+        </Grid>
+        <ScrollView x:Name="DeadlinesContainer" Grid.Row="1">
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding Deadlines}" Margin="0,0,0,60" SelectionChanged="CollectionView_SelectionChanged" Focused="DeadlinesContainer_Unfocused">
+
+                    <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="model:DeadlineInfo">
+                            <ContentView>
+                                <FlyoutBase.ContextFlyout >
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Delete"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=DeleteCommand}"
+                                                        CommandParameter="{Binding .}">
+                                          
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                                <v:DeadlineCardWidget DeadlineInfo="{Binding}"/>
+                            </ContentView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--<Border x:Name="ScreenFiller"  BackgroundColor="White" Opacity="0.35" IsVisible="False">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ScreenFiller_Tapped"/>
+            </Border.GestureRecognizers>
+        </Border>
+
+        <VerticalStackLayout x:Name="ActionBtnStack"
+                             IsVisible="True"
+                             HorizontalOptions="End"
+                             VerticalOptions="End"
+                             Margin="0,0,-199,80">
+            <Button TextColor="DarkBlue"
+                    FontSize="16"
+                    Text="Add to existing subject"
+                    Margin="0,0,0,10"
+                    CornerRadius="20"
+                    />
+            <Button TextColor="DarkBlue"
+                    FontSize="16"
+                    Text="Add custom deadline"
+                    Margin="0,0,0,10"
+                    CornerRadius="20"
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:DeadlinesPageViewModel}}, Path=AddCustomDeadlineCommand}"
+                    Clicked="FABbtn_Clicked"
+                    />
+        </VerticalStackLayout>-->
+        <Button 
+        Grid.Row="2"
+x:Name="FABbtn"
+BackgroundColor="Green"
+CornerRadius="50"
+HeightRequest="60"
+WidthRequest="60"
+Padding="0,-4,0,0"
+Margin="0,0,10,10"
+HorizontalOptions="End"
+VerticalOptions="End"
+Command="{Binding AddDeadlineCommand}"
+Text="+"
+TextColor="White"
+FontSize="48"
+/>
+    </Grid>
+    <uranium:UraniumContentPage.Attachments>
+        <uMaterial:BottomSheetView IsPresented="{Binding IsBottomSheetPresented}" CloseOnTapOutside="True">
+            <uMaterial:BottomSheetView.Header>
+                <VerticalStackLayout/>
+            </uMaterial:BottomSheetView.Header>
+
+            <Border HorizontalOptions="Fill" BackgroundColor="{StaticResource Gray900}" StrokeShape="RoundRectangle 20,20,0,0" HeightRequest="500">
+                <Grid RowDefinitions="*,auto">
+                    <VerticalStackLayout Padding="10,15,0,10" Grid.Row="0">
+                        <Grid>
+                            <Label FontSize="Large" Text="Filters" Padding="0,0,0,10"/>
+                            <Button BackgroundColor="Gray"
+                                    TextColor="White"
+                                    Text="Reset"
+                                    HorizontalOptions="End"
+                                    Margin="0,0,10,0"
+                                    HeightRequest="30"
+                                    WidthRequest="60"
+                                    Padding="0,0,0,0"
+                                    Command="{Binding ResetFiltersCommand}"/>
+                        </Grid>
+                        <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
+                        <Label Text="Show deadlines with priority:"/>
+                        <Grid RowDefinitions="*,*,*" ColumnDefinitions="auto,auto" HorizontalOptions="Start" RowSpacing="-10">
+                            <CheckBox IsChecked="{Binding Filters.PriorityLowSelected}" Grid.Column="0" Grid.Row="0"/>
+                            <Label Text="Low" Grid.Column="1" Grid.Row="0" VerticalOptions="Center"/>
+                            <CheckBox IsChecked="{Binding Filters.PriorityNormalSelected}" Grid.Column="0" Grid.Row="1"/>
+                            <Label Text="Normal" Grid.Column="1" Grid.Row="1" VerticalOptions="Center"/>
+                            <CheckBox IsChecked="{Binding Filters.PriorityHighSelected}" Grid.Column="0" Grid.Row="2"/>
+                            <Label Text="High" Grid.Column="1" Grid.Row="2" VerticalOptions="Center"/>
+                        </Grid>
+                        <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
+                        <Label Text="Show by specified date:"/>
+                        <HorizontalStackLayout>
+                            <CheckBox IsChecked="{Binding Filters.DateSelected}"/>
+                            <Label Padding="0,0,10,0" Text="From:" VerticalOptions="Center"/>
+                            <DatePicker Date="{Binding Filters.FromDate}" Format="dd.MM.yyyy">
+                                <DatePicker.Triggers>
+                                    <DataTrigger TargetType="DatePicker" Binding="{Binding Filters.DateSelected}" Value="False">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </DatePicker.Triggers>
+                            </DatePicker>
+                            <Label Padding="10,0,10,0" VerticalOptions="Center" Text="To:"/>
+                            <DatePicker Date="{Binding Filters.ToDate}" Format="dd.MM.yyyy">
+                                <DatePicker.Triggers>
+                                    <DataTrigger TargetType="DatePicker" Binding="{Binding Filters.DateSelected}" Value="False">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </DatePicker.Triggers>
+                            </DatePicker>
+                        </HorizontalStackLayout>
+                        <BoxView Margin="-10,0,0,10" HeightRequest="0.1"/>
+                    <Grid RowDefinitions="auto,auto" ColumnDefinitions="auto,auto" RowSpacing="-10">
+                        <CheckBox IsChecked="{Binding Filters.OnlyUncompletedSelected}" Grid.Column="0" Grid.Row="0"/>
+                        <Label  Grid.Column="1" Grid.Row="0" VerticalOptions="Center" Text="Uncompleted deadlines" />
+                            <CheckBox IsChecked="{Binding Filters.OnlyCompletedSelected}" Grid.Column="0" Grid.Row="1"/>
+                        <Label  Grid.Column="1" Grid.Row="1" VerticalOptions="Center" Text="Completed deadlines" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                    <Button BackgroundColor="Gray"
+                            TextColor="White"
+                            Grid.Row="1"
+                            Text="Apply"
+                            Margin="10"
+                            Command="{Binding ApplyFiltersCommand}"/>
+
+                </Grid>
+            </Border>
+        </uMaterial:BottomSheetView>
+    </uranium:UraniumContentPage.Attachments>
+</uranium:UraniumContentPage>

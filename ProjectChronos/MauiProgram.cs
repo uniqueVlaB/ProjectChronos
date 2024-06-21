@@ -4,11 +4,15 @@ using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
 using Plugin.LocalNotification;
 using ProjectChronos.Services;
-using ProjectChronos.View;
-using ProjectChronos.View.PopUPs;
-using ProjectChronos.ViewModel;
-using ProjectChronos.ViewModel.Popups;
+using ProjectChronos.Pages;
+using ProjectChronos.Views.Popups;
+using ProjectChronos.ViewModels;
+using ProjectChronos.ViewModels.Popups;
 using UraniumUI;
+using ProjectChronos.Platforms.Android.Services;
+using ProjectChronos.Services.PlatformSpecificInterfaces;
+using DevExpress.Maui;
+
 
 namespace ProjectChronos;
 
@@ -17,14 +21,17 @@ public static class MauiProgram
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
-		builder
+        builder
 			
 			.UseMauiApp<App>()
+            .UseDevExpress()
+            .UseLocalNotification()
 			.UseMauiCommunityToolkit()
             .UseUraniumUI()
             .UseUraniumUIMaterial()
             .UseUraniumUIBlurs()
 			.ConfigureMopups()
+
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -32,7 +39,7 @@ public static class MauiProgram
                 fonts.AddMaterialIconFonts();
             });
 
-
+        
         builder.Services.AddSingleton<CistService>();
 		builder.Services.AddSingleton<StorageService>();
 		builder.Services.AddSingleton<MainPageViewModel>();
@@ -42,10 +49,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<MenuPageViewModel>();
 		builder.Services.AddTransient<GroupSelectionPopup>();
 		builder.Services.AddTransient<GroupSelectionPopupViewModel>();
-        builder.Services.AddSingleton<IMessenger, WeakReferenceMessenger>();
 		builder.Services.AddSingleton<DeadlinesPageViewModel>();
         builder.Services.AddSingleton<DeadlinesPage>();
 		builder.Services.AddTransient<AddDeadlinePage>();
+        builder.Services.AddSingleton<IWorkService, WorkService>();
 
         return builder.Build();
 	}
